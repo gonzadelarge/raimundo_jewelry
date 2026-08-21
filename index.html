@@ -51,9 +51,90 @@
 
 <body>
     <main>
-        <h1>JESÚS PAGA LA COCA</h1>
-        <h2>Primer aviso</h2>
+        <h1 id="titulo">PRIMER AVISO</h1>
+        <h2 id="aviso">La paciencia se está agotando</h2>
     </main>
+
+    <script>
+        const avisos = [
+            {
+                titulo: 'PRIMER AVISO',
+                subtitulo: 'La paciencia se agota'
+            },
+            {
+                titulo: 'SEGUNDO AVISO',
+                subtitulo: 'Encapuchados rumanos van a por ti'
+            },
+            {
+                titulo: 'DIMITRI HA SIDO INFORMADO',
+                subtitulo: 'Dice que te recuerda perfectamente'
+            },
+            {
+                titulo: 'NO ENGAÑAS A NADIE',
+                subtitulo: 'Tu cartera lleva horas declarando'
+            },
+            {
+                titulo: 'OPERACIÓN COBRO EN MARCHA',
+                subtitulo: 'Sabemos donde vives Jesús'
+            },
+            {
+                titulo: 'JESÚS PAGA LA COCA',
+                subtitulo: 'Primer aviso'
+            },
+            {
+                titulo: 'JESÚS JESUSITO',
+                subtitulo: 'Ya sabes, si no pagas paliza'
+            },
+            {
+                titulo: 'ÚLTIMO AVISO',
+                subtitulo: 'Se acabaron las excusas Jesús'
+            },
+            {
+                titulo: 'COMUNICADO OFICIAL',
+                subtitulo: 'Tu excusa ha sido rechazada por unanimidad'
+            },
+            {
+                titulo: 'ALERTA DE BIZUM',
+                subtitulo: 'El botón de pagar lleva horas mirándote'
+            },
+            {
+                titulo: 'PLAN B ACTIVADO',
+                subtitulo: 'Jesus, si no pagas la deuda se convertirá en problemas'
+            },
+            {
+                titulo: 'TACAÑO',
+                subtitulo: 'Hoy invitas tú'
+            },
+            {
+                titulo: 'SECCIÓN DE COBROS',
+                subtitulo: 'Aceptamos Bizum, efectivo y Piernas partidas'
+            },
+            {
+                titulo: 'SABEMOS DONDE VIVES JESÚS',
+                subtitulo: 'El jefe no olvida y nosotros tampoco'
+            },
+
+            {
+                titulo: 'DIMITRI VUELVE A PREGUNTAR',
+                subtitulo: 'Solo quiere saber quién trae la coca'
+            },
+            {
+                titulo: 'AUDITORÍA DE EXCUSAS',
+                subtitulo: 'No se ha encontrado ninguna que funcione'
+            }
+        ];
+
+        const titulo = document.querySelector('#titulo');
+        const aviso = document.querySelector('#aviso');
+        let indice = 0;
+        const unaHora = 60 * 60 * 1000;
+
+        setInterval(() => {
+            indice = (indice + 1) % avisos.length;
+            titulo.textContent = avisos[indice].titulo;
+            aviso.textContent = avisos[indice].subtitulo;
+        }, unaHora);
+    </script>
 </body>
 
 </html>
