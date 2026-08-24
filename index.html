@@ -51,89 +51,91 @@
 
 <body>
     <main>
-        <h1 id="titulo">PRIMER AVISO</h1>
-        <h2 id="aviso">La paciencia se está agotando</h2>
+        <h1 id="title">PRIMER AVISO</h1>
+        <h2 id="message">La paciencia se está agotando</h2>
     </main>
 
     <script>
-        const avisos = [
+        const notices = [
             {
-                titulo: 'PRIMER AVISO',
-                subtitulo: 'La paciencia se agota'
+                title: 'PRIMER AVISO',
+                subtitle: 'La paciencia se agota'
             },
             {
-                titulo: 'SEGUNDO AVISO',
-                subtitulo: 'Encapuchados rumanos van a por ti'
+                title: 'SEGUNDO AVISO',
+                subtitle: 'Encapuchados rumanos van a por ti'
             },
             {
-                titulo: 'DIMITRI HA SIDO INFORMADO',
-                subtitulo: 'Dice que te recuerda perfectamente'
+                title: 'DIMITRI HA SIDO INFORMADO',
+                subtitle: 'Dice que te recuerda perfectamente'
             },
             {
-                titulo: 'NO ENGAÑAS A NADIE',
-                subtitulo: 'Tu cartera lleva horas declarando'
+                title: 'NO ENGAÑAS A NADIE',
+                subtitle: 'Tu cartera lleva horas declarando'
             },
             {
-                titulo: 'OPERACIÓN COBRO EN MARCHA',
-                subtitulo: 'Sabemos donde vives Jesús'
+                title: 'OPERACIÓN COBRO EN MARCHA',
+                subtitle: 'Sabemos donde vives Jesús'
             },
             {
-                titulo: 'JESÚS PAGA LA COCA',
-                subtitulo: 'Primer aviso'
+                title: 'JESÚS PAGA LA COCA',
+                subtitle: 'Primer aviso'
             },
             {
-                titulo: 'JESÚS JESUSITO',
-                subtitulo: 'Ya sabes, si no pagas paliza'
+                title: 'JESÚS JESUSITO',
+                subtitle: 'Ya sabes, si no pagas paliza'
             },
             {
-                titulo: 'ÚLTIMO AVISO',
-                subtitulo: 'Se acabaron las excusas Jesús'
+                title: 'ÚLTIMO AVISO',
+                subtitle: 'Se acabaron las excusas Jesús'
             },
             {
-                titulo: 'COMUNICADO OFICIAL',
-                subtitulo: 'Tu excusa ha sido rechazada por unanimidad'
+                title: 'COMUNICADO OFICIAL',
+                subtitle: 'Tu excusa ha sido rechazada por unanimidad'
             },
             {
-                titulo: 'ALERTA DE BIZUM',
-                subtitulo: 'El botón de pagar lleva horas mirándote'
+                title: 'ALERTA DE BIZUM',
+                subtitle: 'El botón de pagar lleva horas mirándote'
             },
             {
-                titulo: 'PLAN B ACTIVADO',
-                subtitulo: 'Jesus, si no pagas la deuda se convertirá en problemas'
+                title: 'PLAN B ACTIVADO',
+                subtitle: 'Jesus, si no pagas la deuda se convertirá en problemas'
             },
             {
-                titulo: 'TACAÑO',
-                subtitulo: 'Hoy invitas tú'
+                title: 'TACAÑO',
+                subtitle: 'Hoy invitas tú'
             },
             {
-                titulo: 'SECCIÓN DE COBROS',
-                subtitulo: 'Aceptamos Bizum, efectivo y Piernas partidas'
+                title: 'SECCIÓN DE COBROS',
+                subtitle: 'Aceptamos Bizum, efectivo y Piernas partidas'
             },
             {
-                titulo: 'SABEMOS DONDE VIVES JESÚS',
-                subtitulo: 'El jefe no olvida y nosotros tampoco'
+                title: 'SABEMOS DONDE VIVES JESÚS',
+                subtitle: 'El jefe no olvida y nosotros tampoco'
             },
 
             {
-                titulo: 'DIMITRI VUELVE A PREGUNTAR',
-                subtitulo: 'Solo quiere saber quién trae la coca'
+                title: 'DIMITRI VUELVE A PREGUNTAR',
+                subtitle: 'Solo quiere saber quién trae la coca'
             },
             {
-                titulo: 'AUDITORÍA DE EXCUSAS',
-                subtitulo: 'No se ha encontrado ninguna que funcione'
+                title: 'AUDITORÍA DE EXCUSAS',
+                subtitle: 'No se ha encontrado ninguna que funcione'
             }
         ];
 
-        const titulo = document.querySelector('#titulo');
-        const aviso = document.querySelector('#aviso');
-        let indice = 0;
-        const unaHora = 60 * 60 * 1000;
+        const title = document.querySelector('#title');
+        const message = document.querySelector('#message');
+        const oneMinute = 60 * 1000;
 
-        setInterval(() => {
-            indice = (indice + 1) % avisos.length;
-            titulo.textContent = avisos[indice].titulo;
-            aviso.textContent = avisos[indice].subtitulo;
-        }, unaHora);
+        function showNotice() {
+            const index = Math.floor(Date.now() / oneMinute) % notices.length;
+            title.textContent = notices[index].title;
+            message.textContent = notices[index].subtitle;
+        }
+
+        showNotice();
+        setInterval(showNotice, oneMinute);
     </script>
 </body>
 
