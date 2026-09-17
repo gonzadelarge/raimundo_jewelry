@@ -1,0 +1,34 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Opening from "@/components/gallery/Opening.astro";
+import PieceSpread from "@/components/gallery/PieceSpread.astro";
+import { copy, otherLocale, routePath, type Locale } from "@/i18n";
+import { pieces } from "@/data/pieces";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<BaseLayout
+  title=""
+  description={copy[locale].meta.home}
+  locale={locale}
+  alternateHref={routePath("home", otherLocale(locale))}
+  current="home"
+  backdrop="marfil"
+>
+  <Opening locale={locale} />
+
+  <section class="gallery" aria-label={locale === "es" ? "Piezas" : "Pieces"}>
+    {pieces.map((piece, index) => <PieceSpread piece={piece} locale={locale} index={index} />)}
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery {
+    padding-top: clamp(3rem, 8vw, 7rem);
+  }
+</style>

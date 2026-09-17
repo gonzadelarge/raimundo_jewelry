@@ -1,0 +1,51 @@
+---
+// Legal pages and 404. Placeholder text only.
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { copy, otherLocale, routePath, type Locale, type RouteKey } from "@/i18n";
+
+interface Props {
+  locale: Locale;
+  kind: "legal" | "privacy" | "404";
+}
+
+const { locale, kind } = Astro.props;
+const c = copy[locale];
+const title = kind === "legal" ? c.legal.legalTitle : kind === "privacy" ? c.legal.privacyTitle : c.notFound.title;
+const routeKey: RouteKey = kind === "404" ? "home" : kind;
+---
+
+<BaseLayout
+  title={title}
+  description={title}
+  locale={locale}
+  alternateHref={routePath(routeKey, otherLocale(locale))}
+  current={kind === "404" ? undefined : kind}
+  backdrop={kind === "404" ? "burdeos" : "marfil"}
+>
+  <section class="shell simple">
+    <h1 class="title">{title}</h1>
+    {
+      kind === "404" ? (
+        <a class="label arrow-link" href={routePath("home", locale)}>
+          {c.notFound.link} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      ) : (
+        <p class="lead muted">{c.legal.body}</p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .simple {
+    display: grid;
+    gap: 2rem;
+    align-content: center;
+    min-height: 60svh;
+    padding-top: clamp(2rem, 7vw, 6rem);
+  }
+
+  .simple .arrow-link {
+    justify-self: start;
+  }
+</style>

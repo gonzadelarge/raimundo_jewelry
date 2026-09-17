@@ -1,0 +1,173 @@
+---
+import { Image } from "astro:assets";
+import { piecePath, ui, type Locale } from "@/i18n";
+import type { Piece } from "@/data/pieces";
+
+interface Props {
+  piece: Piece;
+  locale: Locale;
+  index: number;
+}
+
+const { piece, locale, index } = Astro.props;
+const t = ui[locale];
+const variant = index % 3;
+const title = piece.title[locale];
+const [product, worn] = piece.spread;
+---
+
+<article class={`spread v${variant}`} id={piece.slug}>
+  <a class="spread-link" href={piecePath(piece.slug, locale)}>
+    <p class="label spread-label">
+      {t.piece} / {title}. <span class="muted">{piece.collection}.</span>
+    </p>
+
+    <div class="photo photo-a" transition:name={`piece-${piece.slug}`} transition:animate="initial" style="view-transition-class: piece-photo">
+      <Image src={product} alt={title} widths={[360, 560, 820]} sizes="(max-width: 760px) 74vw, 34vw" />
+    </div>
+
+    <div class="photo photo-b" data-parallax>
+      <div data-reveal>
+        <Image src={worn} alt="" widths={[360, 560, 820]} sizes="(max-width: 760px) 60vw, 30vw" />
+      </div>
+    </div>
+
+    <div class="spread-info" data-reveal>
+      <p class="label spread-cta">{t.viewPiece} <span class="arrow" aria-hidden="true">→</span></p>
+      <p class="label muted">
+        {t.status[piece.status]} · {piece.year}{piece.edition && ` · ${piece.edition}`}
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .spread {
+    width: min(100%, 1280px);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    scroll-margin-top: calc(var(--header-h) + 2rem);
+  }
+
+  .spread + :global(.spread) {
+    margin-top: clamp(7rem, 18vw, 16rem);
+  }
+
+  .spread-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.5rem repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto;
+    align-items: start;
+  }
+
+  .photo {
+    overflow: hidden;
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-a {
+    aspect-ratio: 4 / 5;
+    z-index: 1;
+  }
+
+  .photo-b > div {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .photo-b :global(img) {
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .spread-link:hover .photo-b :global(img) {
+    transform: scale(1.03);
+  }
+
+  .spread-link:hover .arrow {
+    translate: 0.35em 0;
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: translate 250ms var(--ease-out);
+  }
+
+  .spread-label {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+  }
+
+  .spread-info {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .spread-cta {
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid currentColor;
+    justify-self: start;
+  }
+
+  /* Variant 0: product left, worn photo right and lower */
+  .v0 .photo-a { grid-column: 3 / 8; grid-row: 1; }
+  .v0 .photo-b { grid-column: 7 / 12; grid-row: 1; margin-top: 30%; }
+  .v0 .spread-info { grid-column: 12 / 14; grid-row: 1; margin-top: 30%; padding-left: 1rem; }
+
+  /* Variant 1: worn photo left, product right and higher */
+  .v1 .photo-b { grid-column: 3 / 8; grid-row: 1; margin-top: 22%; }
+  .v1 .photo-a { grid-column: 7 / 11; grid-row: 1; }
+  .v1 .spread-info { grid-column: 11 / 14; grid-row: 1; align-self: end; padding-left: 1.5rem; }
+
+  /* Variant 2: small product in front, large worn photo behind */
+  .v2 .photo-b { grid-column: 5 / 12; grid-row: 1; }
+  .v2 .photo-a { grid-column: 3 / 7; grid-row: 1; margin-top: 45%; }
+  .v2 .spread-info { grid-column: 12 / 14; grid-row: 1; padding-left: 1rem; }
+
+  @media (max-width: 760px) {
+    .spread-link {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .spread-label {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      writing-mode: horizontal-tb;
+      transform: none;
+      white-space: normal;
+      margin-bottom: 1rem;
+    }
+
+    .v0 .photo-a,
+    .v1 .photo-a,
+    .v2 .photo-a { grid-column: 1 / 10; grid-row: 2; margin-top: 0; }
+
+    .v0 .photo-b,
+    .v1 .photo-b,
+    .v2 .photo-b { grid-column: 6 / 13; grid-row: 3; margin-top: -30%; }
+
+    .v1 .photo-a,
+    .v1 .photo-b { grid-column-start: auto; }
+    .v1 .photo-a { grid-column: 4 / 13; }
+    .v1 .photo-b { grid-column: 1 / 8; }
+
+    .v0 .spread-info,
+    .v1 .spread-info,
+    .v2 .spread-info {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      margin-top: 1.25rem;
+      padding-left: 0;
+      align-self: start;
+    }
+  }
+</style>

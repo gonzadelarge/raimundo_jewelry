@@ -1,0 +1,220 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { copy, otherLocale, routePath, type Locale } from "@/i18n";
+import { baixoPhotos } from "@/data/photos";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const c = copy[locale];
+---
+
+<BaseLayout
+  title="El Baixo"
+  description={c.meta.baixo}
+  locale={locale}
+  alternateHref={routePath("baixo", otherLocale(locale))}
+  current="baixo"
+  backdrop="negro-soft"
+>
+  <section class="lead-block">
+    <div class="lead-photo">
+      <Image src={baixoPhotos.lead} alt="" widths={[800, 1200, 1600]} sizes="100vw" loading="eager" />
+    </div>
+    <div class="shell lead-text panel" data-reveal>
+      <h1 class="title">{c.baixo.title}</h1>
+      <div class="prose lead">
+        {c.baixo.intro.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="shell history">
+    <div class="history-text panel" data-reveal>
+      <h2 class="title-sm">{c.baixo.historyTitle}</h2>
+      <div class="prose">
+        {c.baixo.history.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+    {
+      baixoPhotos.history.map((photo, index) => (
+        <div class={`history-photo h${index}`} data-reveal>
+          <Image src={photo} alt="" widths={[400, 700]} sizes="(max-width: 760px) 80vw, 30vw" />
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="shell people">
+    <div class="panel people-text" data-reveal>
+      <h2 class="title-sm">{c.baixo.peopleTitle}</h2>
+      <p>{c.baixo.people}</p>
+    </div>
+    <ul class="people-grid">
+      {
+        baixoPhotos.people.map((photo, index) => (
+          <li data-reveal style={`transition-delay:${index * 80}ms`}>
+            <div class="person-photo">
+              <Image src={photo} alt="" widths={[300, 500]} sizes="(max-width: 760px) 45vw, 22vw" />
+            </div>
+            <p class="label">{c.baixo.peopleNames[index]}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="shell rudi">
+    <div class="rudi-photo" data-reveal>
+      <Image src={baixoPhotos.rudi} alt="" widths={[400, 700]} sizes="(max-width: 760px) 100vw, 36vw" />
+    </div>
+    <div class="panel" data-reveal>
+      <h2 class="title-sm">{c.baixo.rudiTitle}</h2>
+      <p>{c.baixo.rudi}</p>
+    </div>
+  </section>
+
+  <section class="shell closing">
+    <div class="seal-photo" data-reveal>
+      <Image src={baixoPhotos.seal} alt="" widths={[400, 700]} sizes="(max-width: 760px) 80vw, 30vw" />
+    </div>
+    <div class="panel" data-reveal>
+      <p class="title-sm">{c.origin}</p>
+      <p>{c.baixo.closing}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Text sits on a plain block, because the soft veil lets the gold veins show. */
+  .panel {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: rgb(17 17 17 / 0.78);
+  }
+
+  section + section {
+    margin-top: clamp(6rem, 14vw, 12rem);
+  }
+
+  .lead-block {
+    position: relative;
+  }
+
+  .lead-photo {
+    height: min(78svh, 52rem);
+    overflow: hidden;
+  }
+
+  .lead-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lead-text {
+    position: relative;
+    width: min(calc(100% - 2 * var(--gutter)), 44rem);
+    margin: -8rem 0 0 var(--gutter);
+  }
+
+  .history {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .history-text { grid-column: 1 / 6; grid-row: 1; }
+  .history-photo { overflow: hidden; aspect-ratio: 4 / 5; }
+  .history-photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .h0 { grid-column: 7 / 11; grid-row: 1; }
+  .h1 { grid-column: 9 / 13; grid-row: 1; margin-top: 45%; z-index: 1; }
+
+  .people {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .people-text {
+    max-width: 40rem;
+  }
+
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+
+  .people-grid li {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .person-photo {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  .person-photo :global(img),
+  .rudi-photo :global(img),
+  .seal-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rudi,
+  .closing {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+  }
+
+  .rudi-photo,
+  .seal-photo {
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+  }
+
+  .closing {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr);
+  }
+
+  .closing .seal-photo {
+    order: 2;
+  }
+
+  @media (max-width: 760px) {
+    .lead-text {
+      margin-top: -4rem;
+    }
+
+    .history {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      row-gap: 2rem;
+    }
+
+    .history-text { grid-column: 1 / -1; }
+    .h0 { grid-column: 1 / 9; grid-row: 2; }
+    .h1 { grid-column: 6 / 13; grid-row: 3; margin-top: -25%; }
+
+    .people-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rudi,
+    .closing {
+      grid-template-columns: 1fr;
+    }
+
+    .closing .seal-photo {
+      order: 0;
+    }
+  }
+</style>
