@@ -1,0 +1,229 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { copy, otherLocale, routePath, ui, type Locale } from "@/i18n";
+import { pieces } from "@/data/pieces";
+import { contactPhoto } from "@/data/photos";
+import { site } from "@/data/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const c = copy[locale];
+const t = ui[locale];
+const pieceTitles = Object.fromEntries(pieces.map((piece) => [piece.slug, piece.title[locale]]));
+const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(`Raimundo · ${subject}`)}`;
+---
+
+<BaseLayout
+  title={t.nav.contact}
+  description={c.meta.contact}
+  locale={locale}
+  alternateHref={routePath("contact", otherLocale(locale))}
+  current="contact"
+  backdrop="marfil"
+>
+  <div class="contact" data-contact data-pieces={JSON.stringify(pieceTitles)} data-email={site.email}>
+    <section class="shell intro">
+      <h1 class="title">{c.contact.title}</h1>
+      <p class="lead">{c.contact.intro}</p>
+      <p class="label piece-note" data-piece-note hidden>
+        <span class="star" aria-hidden="true"></span>
+        {c.contact.aboutPiece} <span data-piece-name></span>
+      </p>
+    </section>
+
+    <section class="shell reasons" aria-label={c.contact.write}>
+      <ul class="reason-list">
+        {
+          c.contact.reasons.map((reason) => (
+            <li>
+              <a
+                class="reason"
+                href={mailto(reason.subject)}
+                data-reason={reason.key}
+                data-subject={reason.subject}
+              >
+                <span class="title-sm">{reason.title}</span>
+                <span class="reason-text muted">{reason.text}</span>
+                <span class="label arrow-link">
+                  {c.contact.write} <span class="arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="label muted draft-note">{c.contact.formNote}</p>
+    </section>
+
+    <section class="shell commission" id="encargos" aria-labelledby="commission-title">
+      <div class="commission-photo" data-reveal>
+        <Image src={contactPhoto} alt="" widths={[400, 700]} sizes="(max-width: 760px) 100vw, 36vw" />
+      </div>
+      <div class="commission-text" data-reveal>
+        <p class="label muted">{c.contact.reasons[1].title}</p>
+        <h2 id="commission-title" class="title-sm">{c.contact.commissionTitle}</h2>
+        <p>{c.contact.commission}</p>
+        <ol class="commission-steps">
+          {c.contact.steps.map((step, index) => <li><span class="label muted">0{index + 1}</span> {step}</li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="shell channels" aria-label={c.contact.channels}>
+      <a class="label" href={`mailto:${site.email}`}>{site.email}</a>
+      <a class="label" href={site.instagram} target="_blank" rel="noreferrer">Instagram {site.instagramHandle}</a>
+      <a class="label" href={site.whatsapp} target="_blank" rel="noreferrer">WhatsApp <span class="muted">({t.draft})</span></a>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  // Fill the piece name and the email subjects when the reader comes from a piece page.
+  function setupContact() {
+    const root = document.querySelector<HTMLElement>("[data-contact]");
+    if (!root) return;
+    const params = new URLSearchParams(location.search);
+    const slug = params.get("pieza");
+    const reasonKey = params.get("motivo");
+    const titles = JSON.parse(root.dataset.pieces ?? "{}") as Record<string, string>;
+    const name = slug ? titles[slug] : undefined;
+
+    const note = root.querySelector<HTMLElement>("[data-piece-note]");
+    const nameSlot = root.querySelector<HTMLElement>("[data-piece-name]");
+    if (name && note && nameSlot) {
+      nameSlot.textContent = name;
+      note.hidden = false;
+    }
+
+    root.querySelectorAll<HTMLAnchorElement>("[data-reason]").forEach((link) => {
+      const subject = `Raimundo · ${link.dataset.subject}${name ? ` · ${name}` : ""}`;
+      link.href = `mailto:${root.dataset.email}?subject=${encodeURIComponent(subject)}`;
+      const highlighted = reasonKey ? link.dataset.reason === reasonKey : Boolean(name) && link.dataset.reason === "piece";
+      link.toggleAttribute("data-highlight", highlighted);
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupContact);
+</script>
+
+<style>
+  .intro {
+    display: grid;
+    gap: 1.5rem;
+    padding-top: clamp(2rem, 7vw, 6rem);
+  }
+
+  .piece-note {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .piece-note[hidden] {
+    display: none;
+  }
+
+  .reasons {
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .reason-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .reason-list li + li {
+    border-left: 1px solid var(--line);
+  }
+
+  .reason {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    height: 100%;
+    padding: 2rem clamp(1rem, 2.5vw, 2rem) 2rem 0;
+    transition: background-color 250ms ease;
+  }
+
+  .reason-list li + li .reason {
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .reason:hover,
+  .reason[data-highlight] {
+    background: color-mix(in srgb, var(--ambar) 14%, transparent);
+  }
+
+  .reason .arrow-link {
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  .draft-note {
+    margin-top: 1rem;
+  }
+
+  .commission {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+    margin-top: clamp(6rem, 12vw, 10rem);
+  }
+
+  .commission-photo {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .commission-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .commission-text {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 36rem;
+  }
+
+  .commission-steps {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .channels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+    margin-top: clamp(5rem, 10vw, 8rem);
+  }
+
+  @media (max-width: 760px) {
+    .reason-list {
+      grid-template-columns: 1fr;
+    }
+
+    .reason-list li + li {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .reason-list li + li .reason,
+    .reason {
+      padding-inline: 0.75rem;
+    }
+
+    .commission {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

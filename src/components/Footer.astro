@@ -1,0 +1,94 @@
+---
+import Seal from "@/components/brand/Seal.astro";
+import { copy, routePath, ui, type Locale } from "@/i18n";
+import { site } from "@/data/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+const c = copy[locale];
+---
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <p class="slogan label">
+      {
+        c.fourC.map((word, index) => (
+          <>
+            {index > 0 && <span class="dot" aria-hidden="true">·</span>}
+            <span>{word}</span>
+          </>
+        ))
+      }
+    </p>
+
+    <div class="row">
+      <p class="label origin">
+        <Seal class="seal" title="Raimundo" />
+        {t.footer.origin}
+      </p>
+
+      <ul class="links">
+        <li><a class="label" href={site.instagram} target="_blank" rel="noreferrer">Instagram</a></li>
+        <li><a class="label" href={`mailto:${site.email}`}>Email</a></li>
+      </ul>
+
+      <ul class="links legal">
+        <li><a class="label muted" href={routePath("legal", locale)}>{t.footer.legal}</a></li>
+        <li><a class="label muted" href={routePath("privacy", locale)}>{t.footer.privacy}</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: clamp(5rem, 12vw, 10rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-inner {
+    display: grid;
+    gap: 2rem;
+    padding-block: 2.5rem max(2rem, env(safe-area-inset-bottom));
+  }
+
+  .slogan {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+    font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+  }
+
+  .dot {
+    color: var(--ambar);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+  }
+
+  .origin {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .origin :global(.seal) {
+    width: 1.1rem;
+    height: auto;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.75rem;
+  }
+</style>

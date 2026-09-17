@@ -1,0 +1,214 @@
+---
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PieceMedia from "@/components/react/PieceMedia";
+import { piecePath, routePath, otherLocale, ui, type Locale } from "@/i18n";
+import { getNextPiece, type Piece } from "@/data/pieces";
+
+interface Props {
+  piece: Piece;
+  locale: Locale;
+}
+
+const { piece, locale } = Astro.props;
+const t = ui[locale];
+const title = piece.title[locale];
+const next = getNextPiece(piece.slug);
+const galleryPath = routePath("home", locale);
+const contactPath = routePath("contact", locale);
+
+const media = await Promise.all(
+  piece.media.map(async (src, i) => {
+    const [thumb, full] = await Promise.all([
+      getImage({ src, widths: [480, 800, 1200], format: "webp" }),
+      getImage({ src, width: Math.min(src.width, 1600), format: "webp" }),
+    ]);
+    return {
+      src: thumb.src,
+      srcSet: thumb.srcSet.attribute,
+      width: src.width,
+      height: src.height,
+      full: full.src,
+      alt: `${title} ${i + 1}`,
+    };
+  }),
+);
+---
+
+<BaseLayout
+  title={title}
+  description={piece.story[locale]}
+  locale={locale}
+  alternateHref={piecePath(piece.slug, otherLocale(locale))}
+  current="piece"
+  backdrop="negro"
+>
+  <article>
+    <header class="piece-head shell">
+      <a class="label back arrow-link" href={`${galleryPath}#${piece.slug}`} data-back={galleryPath}>
+        <span class="arrow" aria-hidden="true">←</span>
+        {t.back}
+      </a>
+
+      <div class="head-grid">
+        <div class="text">
+          <p class="label muted">{t.piece} · {piece.collection}</p>
+          <h1 class="title">{title}</h1>
+
+          <dl class="facts">
+            <div><dt class="label muted">{t.year}</dt><dd>{piece.year}</dd></div>
+            <div><dt class="label muted">{t.materials}</dt><dd>{piece.materials[locale].join(", ")}</dd></div>
+            <div>
+              <dt class="label muted">{t.statusLabel}</dt>
+              <dd><span class="star" aria-hidden="true"></span> {t.status[piece.status]}</dd>
+            </div>
+            {piece.edition && <div><dt class="label muted">{t.edition}</dt><dd>{piece.edition}</dd></div>}
+          </dl>
+
+          <p class="story">{piece.story[locale]}</p>
+
+          <div class="actions">
+            <a class="button" href={`${contactPath}?pieza=${piece.slug}`}>{t.askPiece}</a>
+            <a class="label arrow-link" href={`${contactPath}?pieza=${piece.slug}&motivo=commission`}>
+              {t.similar} <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero" transition:name={`piece-${piece.slug}`} transition:animate="initial" style="view-transition-class: piece-photo">
+          <Image src={piece.spread[0]} alt={title} widths={[480, 800, 1100]} sizes="(max-width: 760px) 100vw, 42vw" loading="eager" />
+        </div>
+      </div>
+    </header>
+
+    <section class="media" aria-label={title}>
+      <PieceMedia client:visible images={media} labels={t.lightbox} />
+    </section>
+
+    <a class="next" href={piecePath(next.slug, locale)}>
+      <div class="shell next-inner">
+        <div>
+          <p class="label muted">{t.nextPiece}</p>
+          <p class="title-sm">{next.title[locale]} <span class="arrow" aria-hidden="true">→</span></p>
+        </div>
+        <div class="next-photo" transition:name={`piece-${next.slug}`} transition:animate="initial" style="view-transition-class: piece-photo">
+          <Image src={next.spread[0]} alt="" widths={[240, 400]} sizes="12rem" />
+        </div>
+      </div>
+    </a>
+  </article>
+</BaseLayout>
+
+<style>
+  .piece-head {
+    padding-top: clamp(1.5rem, 4vw, 3rem);
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .back {
+    margin-bottom: clamp(2rem, 5vw, 4rem);
+  }
+
+  .head-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+  }
+
+  .text {
+    display: grid;
+    gap: 1.5rem;
+    align-content: end;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1rem 2rem;
+    margin: 0;
+    padding-block: 1.25rem;
+    border-block: 1px solid var(--line);
+  }
+
+  .facts dd {
+    margin: 0.25rem 0 0;
+  }
+
+  .story {
+    max-width: 34rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .hero :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .media {
+    width: min(100%, 1440px);
+    margin-inline: auto;
+  }
+
+  .next {
+    display: block;
+    margin-top: clamp(4rem, 10vw, 8rem);
+    border-block: 1px solid var(--line);
+  }
+
+  .next-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: 2rem;
+  }
+
+  .next-inner .title-sm {
+    margin-top: 0.5rem;
+  }
+
+  .next .arrow {
+    display: inline-block;
+    transition: translate 250ms var(--ease-out);
+  }
+
+  .next:hover .arrow {
+    translate: 0.35em 0;
+  }
+
+  .next-photo {
+    width: clamp(6rem, 14vw, 12rem);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .next-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 760px) {
+    .head-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero {
+      order: -1;
+    }
+  }
+</style>
