@@ -71,9 +71,11 @@ const [product, worn] = piece.spread;
     object-fit: cover;
   }
 
+  /* photo-a sits in front in every variant, so it drops a shadow on photo-b. */
   .photo-a {
     aspect-ratio: 4 / 5;
     z-index: 1;
+    box-shadow: var(--shadow-photo);
   }
 
   .photo-b > div {

@@ -7,10 +7,12 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { htmlLang, otherLocale, ui, type Locale, type RouteKey } from "@/i18n";
 import marfil from "@/assets/backgrounds/marmol_marfil.png";
+import blanco from "@/assets/backgrounds/marmol_blanco.png";
 import negro from "@/assets/backgrounds/marmol_negro.png";
 import burdeos from "@/assets/backgrounds/marmol_burdeos.png";
 
-export type Backdrop = "marfil" | "negro" | "negro-soft" | "burdeos";
+// negro is reserved for El Baixo. Piece pages use blanco.
+export type Backdrop = "marfil" | "blanco" | "negro" | "negro-soft" | "burdeos";
 
 interface Props {
   title: string;
@@ -23,14 +25,14 @@ interface Props {
 
 const { title, description, locale, alternateHref, current, backdrop = "marfil" } = Astro.props;
 
-const marbles = { marfil, negro, burdeos };
+const marbles = { marfil, blanco, negro, burdeos };
 const source = backdrop === "negro-soft" ? "negro" : backdrop;
 const [marble, marbleDark] = await Promise.all([
   getImage({ src: marbles[source], format: "webp", width: 1024, quality: 72 }),
   getImage({ src: negro, format: "webp", width: 1024, quality: 72 }),
 ]);
 
-const theme = backdrop === "marfil" ? "light" : "dark";
+const theme = backdrop === "marfil" || backdrop === "blanco" ? "light" : "dark";
 const veil = backdrop === "negro-soft" ? "soft" : undefined;
 const pageTitle = title ? `${title} · Raimundo` : "Raimundo · Luxury jewelry with an underground spirit";
 const other = otherLocale(locale);
@@ -56,7 +58,7 @@ const t = ui[locale];
     <link rel="preload" href="/fonts/carla-sans/carla-sans.woff2" as="font" type="font/woff2" crossorigin />
     <ClientRouter />
   </head>
-  <body>
+  <body data-page={current}>
     <a class="skip-link label" href="#main">{t.skip}</a>
     <div class="backdrop" aria-hidden="true"></div>
     <Header locale={locale} current={current} alternateHref={alternateHref} />

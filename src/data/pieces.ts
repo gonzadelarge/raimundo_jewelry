@@ -1,4 +1,4 @@
-// Draft catalogue. Names, data and stories are placeholders.
+// Wired is the first real piece. The rest are placeholders: names, data and stories.
 // The real version will import one es.mdx and one en.mdx per piece (see docs/plan-web-v1.md 6.3).
 import type { ImageMetadata } from "astro";
 import type { Localized } from "@/i18n";
@@ -30,6 +30,23 @@ const story = {
 };
 
 export const pieces: Piece[] = [
+  {
+    slug: "wired",
+    title: { es: "Wired", en: "Wired" },
+    collection: "Hecho en El Baixo",
+    year: 2026,
+    materials: {
+      es: ["Plata 925", "Diamantes Salt & Pepper", "Cristal de roca", "Cable de sonido"],
+      en: ["925 silver", "Salt and pepper diamonds", "Rock crystal", "Audio cable"],
+    },
+    status: "unique",
+    spread: [p.wired04, p.wired01],
+    media: [p.wired04, p.wired01, p.wired02, p.wired05, p.wired03, p.wired06],
+    story: {
+      es: "Wired nace en El Baixo como una pieza compartida entre generaciones, diseñada junto a Rudi. En ella conviven plata, diamantes Salt & Pepper, cristal de roca y cable de sonido: lujo y materia cotidiana, oficio tradicional y lenguaje contemporáneo. Una mezcla poco probable, pero natural dentro del taller. Wired es conexión: entre materiales, entre personas y entre generaciones.",
+      en: "Wired comes from El Baixo, a piece shared between generations and designed together with Rudi. Silver, salt and pepper diamonds, rock crystal and audio cable live together in it: luxury and everyday matter, traditional craft and contemporary language. An unlikely mix, and a natural one inside the workshop. Wired is connection: between materials, between people and between generations.",
+    },
+  },
   {
     slug: "colgante-luna",
     title: { es: "Colgante Luna", en: "Luna Pendant" },

@@ -4,6 +4,8 @@ A working draft to evaluate **structure, navigation and transitions**. Date: 202
 
 This draft is not the final site. The content model (MDX files per piece) is not built, the photos are placeholders and the texts are shortened. Decisions and reasons live in [plan-web-v1.md](plan-web-v1.md). This file explains what the draft does, how it is built and what to look at.
 
+> **This file records the draft as it was on 2026-09-17. Parts of it are now out of date.** The piece view changed on 2026-09-19: the background is `marmol_blanco`, not `marmol_negro`; the photo block is a mosaic that breaks apart on scroll; the parallax moved from 8% to 22%. For the current state read [design.md](design.md), [structure.md](structure.md) and [decisions.md](decisions.md), which are kept up to date. Nothing below is edited, on purpose: it is the record of what was reviewed.
+
 ---
 
 ## 1. Run it

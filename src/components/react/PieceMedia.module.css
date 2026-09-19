@@ -1,19 +1,53 @@
+/* Staggered grid: one photo per row, alternating side and width,
+   so the column keeps a rhythm while it scrolls. */
 .grid {
+  --pad: clamp(4rem, 10vw, 9rem);
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(4rem, 11vw, 11rem) clamp(1.5rem, 3vw, 3rem);
+  /* --break is the scroll the mosaic needs to fall apart. The script sets it. */
+  padding-block: calc(var(--pad) + var(--break, 0px)) var(--pad);
 }
 
 .item {
+  position: relative;
   display: block;
   overflow: hidden;
   cursor: zoom-in;
   aspect-ratio: 4 / 5;
+  transform-origin: top left;
 }
 
-.wide {
+.band {
   grid-column: 1 / -1;
   aspect-ratio: 16 / 9;
+}
+
+.wideLeft {
+  grid-column: 1 / span 9;
+  aspect-ratio: 3 / 2;
+}
+
+.wideRight {
+  grid-column: 4 / -1;
+  aspect-ratio: 3 / 2;
+}
+
+.tallLeft {
+  grid-column: 1 / span 5;
+  aspect-ratio: 4 / 5;
+}
+
+.tallRight {
+  grid-column: 8 / -1;
+  aspect-ratio: 4 / 5;
+}
+
+/* Taller than the item, so the parallax has room to move inside the frame. */
+.frame {
+  position: absolute;
+  inset: -14% 0;
+  display: block;
 }
 
 .item img {
@@ -28,14 +62,17 @@
 }
 
 .lightbox {
-  width: 100%;
+  /* The same black margin runs around the whole zoom view. */
+  --zoom-pad: clamp(1rem, 3vw, 2rem);
+  width: 100vw;
   max-width: none;
   height: 100dvh;
   max-height: none;
   margin: 0;
   padding: 0;
   border: 0;
-  color: #f3efe7;
+  overflow: hidden;
+  color: var(--marfil);
   background: rgb(17 17 17 / 0.96);
 }
 
@@ -69,19 +106,27 @@
   letter-spacing: 0.16em;
 }
 
+/* A photo taller than the screen scrolls here, and only here:
+   the page behind is locked while the zoom is open. */
 .stage {
   display: grid;
-  place-items: center;
+  place-items: safe center;
   min-height: 0;
-  padding-inline: clamp(0.5rem, 3vw, 2rem);
-  touch-action: pan-y;
+  padding: var(--zoom-pad);
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y pinch-zoom;
   user-select: none;
+  /* The photo still scrolls, the bar just does not show. */
+  scrollbar-width: none;
+}
+
+.stage::-webkit-scrollbar {
+  display: none;
 }
 
 .full {
   max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
   animation: fade-in 260ms ease both;
 }
 
@@ -91,13 +136,23 @@
   }
 }
 
+/* Mobile: one column. Every photo fills the width, with the same gap and the
+   same padding all the way down. */
 @media (max-width: 760px) {
   .grid {
-    grid-template-columns: 1fr;
+    gap: 1.25rem 0;
+    padding: 3rem 1.25rem;
   }
 
-  .wide,
-  .item {
-    aspect-ratio: 4 / 5;
+  .band,
+  .wideLeft,
+  .wideRight,
+  .tallLeft,
+  .tallRight {
+    grid-column: 1 / -1;
+  }
+
+  .band {
+    aspect-ratio: 3 / 2;
   }
 }
