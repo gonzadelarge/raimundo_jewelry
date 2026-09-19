@@ -1,5 +1,12 @@
-// Draft photos. "real-*" come from the brand PDF moodboard (page 44).
+// "wired-*" are the first real piece photos. The rest is still draft material:
+// "real-*" come from the brand PDF moodboard (page 44),
 // "random-*" are placeholders from picsum.photos, stored locally.
+import wired01 from "@/assets/photos/wired-01.jpg";
+import wired02 from "@/assets/photos/wired-02.jpg";
+import wired03 from "@/assets/photos/wired-03.jpg";
+import wired04 from "@/assets/photos/wired-04.jpg";
+import wired05 from "@/assets/photos/wired-05.jpg";
+import wired06 from "@/assets/photos/wired-06.jpg";
 import real01 from "@/assets/photos/real-01.jpg";
 import real02 from "@/assets/photos/real-02.jpg";
 import real03 from "@/assets/photos/real-03.jpg";
@@ -26,13 +33,12 @@ import random15 from "@/assets/photos/random-15.jpg";
 import random16 from "@/assets/photos/random-16.jpg";
 import random17 from "@/assets/photos/random-17.jpg";
 import random18 from "@/assets/photos/random-18.jpg";
-import sealRelief from "@/assets/backgrounds/Fondo_Sello_bajorelieve.png";
 
 export const photos = {
+  wired01, wired02, wired03, wired04, wired05, wired06,
   real01, real02, real03, real04, real05, real06, real07, real08,
   random01, random02, random03, random04, random05, random06, random07, random08, random09,
   random10, random11, random12, random13, random14, random15, random16, random17, random18,
-  sealRelief,
 };
 
 export const openingPhotos = [photos.real06, photos.random05, photos.real04, photos.random02, photos.real03];
@@ -47,7 +53,6 @@ export const baixoPhotos = {
   history: [photos.random17, photos.real02],
   people: [photos.real08, photos.real05, photos.real03, photos.real06],
   rudi: photos.random14,
-  seal: photos.sealRelief,
 };
 
 export const contactPhoto = photos.real04;

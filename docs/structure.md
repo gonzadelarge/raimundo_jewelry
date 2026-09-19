@@ -19,7 +19,7 @@ way: never copy a view to make an English variant.
 | View | ES | EN | Template | Backdrop |
 |---|---|---|---|---|
 | Home | `/` | `/en` | `HomeView.astro` | marfil |
-| Piece | `/piezas/[slug]` | `/en/pieces/[slug]` | `PieceView.astro` | negro |
+| Piece | `/piezas/[slug]` | `/en/pieces/[slug]` | `PieceView.astro` | blanco |
 | Info | `/info` | `/en/info` | `InfoView.astro` | marfil |
 | El Baixo | `/el-baixo` | `/en/el-baixo` | `BaixoView.astro` | negro-soft |
 | Contacto | `/contacto` | `/en/contact` | `ContactView.astro` | marfil |
@@ -29,7 +29,7 @@ way: never copy a view to make an English variant.
 A piece keeps the **same slug in both languages**. Only the path segment changes
 (`piezas` / `pieces`).
 
-29 pages build today: 8 pieces x 2 languages, plus 12 fixed pages and the 404.
+31 pages build today: 9 pieces x 2 languages, plus 12 fixed pages and the 404.
 
 ## i18n
 
@@ -58,10 +58,14 @@ Every view wraps its content in `BaseLayout`. Props:
 | `locale` | `"es"` or `"en"`. |
 | `alternateHref` | The same view in the other language. Feeds the `hreflang` link and the switch. |
 | `current` | Which nav link is marked as the current page. |
-| `backdrop` | `marfil`, `negro`, `negro-soft` or `burdeos`. Picks the marble and the theme. |
+| `backdrop` | `marfil`, `blanco`, `negro`, `negro-soft` or `burdeos`. Picks the marble and the theme. `negro` is reserved for El Baixo. |
 
 The layout converts the marble PNG to WebP at build time and passes the URL as a CSS variable on
 `<html>`. `data-theme="light|dark"` switches the colour tokens. Details in [design.md](design.md).
+
+`<body>` carries `data-page`, the same value as `current`. It is the hook for a rule that only one
+kind of page needs. Today it drops the footer top margin on a piece page, because the page already
+ends with the next-piece band.
 
 ## Header
 
@@ -93,11 +97,26 @@ Instagram, email, and the two legal links.
   photo (the one that flies into the piece page), the worn photo, a vertical label, `VER PIEZA →`
   and the status line.
 
+## The piece page
+
+Three blocks, in this order:
+
+1. **Cover.** Fills the first screen. Text on the left, the 4:5 photo on the right. The photo
+   drives the size through `--hero-w`; see [design.md](design.md).
+2. **Photo block.** The React island. On desktop the photos start packed in one screen and break
+   apart into a column as you scroll. On mobile it is one column, full width.
+3. **Next piece.** A band with a top line. The footer joins it with no gap.
+
 ## The React island
 
-`src/components/react/PieceMedia.tsx` is the only React component: the photo grid and lightbox on
-a piece page. Everything else is Astro. Keep it that way unless a feature really needs client
-state.
+`src/components/react/PieceMedia.tsx` is the only React component: the photo block and the zoom
+view on a piece page. `mosaic.ts` next to it packs the mosaic; it is plain TypeScript with no
+React, so it can be read and tested on its own. Everything else is Astro. Keep it that way unless
+a feature really needs client state.
+
+The zoom view is a native `<dialog>` opened with `showModal()`. It locks the page scroll while it
+is open, so there is one scrollbar and not two. A photo taller than the screen scrolls inside the
+dialog.
 
 ## How the views connect
 

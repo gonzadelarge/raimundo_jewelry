@@ -26,6 +26,7 @@ Never write a visible string directly into a view. If a view needs a new sentenc
 
 1. Put the photos in `src/assets/photos/`. Use real filenames, not `random-*`. Astro converts
    them to WebP in several sizes at build time, so commit the originals, not optimised copies.
+   The pattern is the piece name plus a number: `wired-01.jpg` to `wired-06.jpg`.
 2. Import them in `src/data/photos.ts` and add them to the `photos` object.
 3. Add one entry to the `pieces` array in `src/data/pieces.ts`.
 
@@ -49,7 +50,14 @@ sort field. To feature a piece, move it up.
 
 **`spread` must be `[product, worn]`.** The first photo is the one that flies into the piece page
 during the transition, and the piece page shows it in the header. Both must be the same 4:5
-crop, or the photo stretches mid-flight.
+crop, or the photo stretches mid-flight. A centre crop is what the browser does, so check that the
+jewel survives it before you pick the pair.
+
+**`media` needs no layout choice.** The grid reads each photo's own width and height and gives it
+a shape: landscape photos get a wide frame, portrait ones a tall frame, and every third landscape
+photo runs full width. Order the array by what you want read first. On desktop the same photos
+also form the mosaic that breaks apart on scroll, so every one of them should still read at about
+a third of the screen.
 
 | `status` | ES | EN |
 |---|---|---|
@@ -86,17 +94,20 @@ its own. See [seo.md](seo.md).
 
 | Item | Now | Needs |
 |---|---|---|
-| Piece photos | 8 real moodboard photos mixed with 18 picsum placeholders | Product + worn photo per piece |
-| Pieces | 8 invented names sharing one sample story | Real catalogue from the team |
+| Piece photos | Wired has 6 real photos. The rest: 8 moodboard photos mixed with 18 picsum placeholders | Product + worn photo per piece |
+| Pieces | Wired is real. 8 invented names share one sample story | Real catalogue from the team |
 | Opening, Info, El Baixo photos | Mixed real and random | Workshop, process and people photos |
 | People names in El Baixo | "Nombre" | Real first names |
 | English copy | Draft translation | Review by a person |
 | Legal pages | One sentence | Real legal texts |
 | El Baixo closing paragraph | Missing in the source copy | Client to write it |
 
-`images/piece_1/` is an untracked drop folder with the first real piece (WIRED) and its photos.
-Nothing in the build reads it. Moving it into `src/assets/photos/` and `src/data/pieces.ts` is the
-normal path for real content.
+`images/` is an untracked drop folder for new piece material. Nothing in the build reads it.
+Copying the photos into `src/assets/photos/` and writing the entry in `src/data/pieces.ts` is the
+normal path for real content. `piece_1` (Wired) went through it already. `piece_2` is waiting.
+
+The `description.md` the client writes in that folder is source material, not site copy. Condense
+it into 2 to 5 lines for the `story` field and drop the markdown marks; the field is plain text.
 
 ## Planned content model, not built
 

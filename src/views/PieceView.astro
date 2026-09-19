@@ -41,7 +41,7 @@ const media = await Promise.all(
   locale={locale}
   alternateHref={piecePath(piece.slug, otherLocale(locale))}
   current="piece"
-  backdrop="negro"
+  backdrop="blanco"
 >
   <article>
     <header class="piece-head shell">
@@ -60,7 +60,7 @@ const media = await Promise.all(
             <div><dt class="label muted">{t.materials}</dt><dd>{piece.materials[locale].join(", ")}</dd></div>
             <div>
               <dt class="label muted">{t.statusLabel}</dt>
-              <dd><span class="star" aria-hidden="true"></span> {t.status[piece.status]}</dd>
+              <dd>{t.status[piece.status]}</dd>
             </div>
             {piece.edition && <div><dt class="label muted">{t.edition}</dt><dd>{piece.edition}</dd></div>}
           </dl>
@@ -100,26 +100,38 @@ const media = await Promise.all(
 </BaseLayout>
 
 <style>
+  /* Cover: the back link on top, then two columns of the same height
+     filling the rest of the first screen. */
   .piece-head {
-    padding-top: clamp(1.5rem, 4vw, 3rem);
-    padding-bottom: clamp(3rem, 8vw, 6rem);
-  }
-
-  .back {
-    margin-bottom: clamp(2rem, 5vw, 4rem);
-  }
-
-  .head-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: end;
+    grid-template-rows: auto 1fr;
+    min-height: calc(100svh - var(--header-h));
+    padding-top: clamp(0.5rem, 1.5vw, 1rem);
+    padding-bottom: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  /* Grid items stretch by default, which would run the underline across the page. */
+  .back {
+    justify-self: start;
+    padding-right: 0.7em;
+    margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
+  }
+
+  /* The photo drives the size: its width comes from the height left on screen,
+     so it always keeps 4:5 and never gets cut. */
+  .head-grid {
+    --hero-w: min(calc((100svh - var(--header-h) - 7rem) * 0.8), 44vw);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--hero-w);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: stretch;
+    align-self: center;
   }
 
   .text {
     display: grid;
-    gap: 1.5rem;
-    align-content: end;
+    align-content: space-between;
+    gap: 1.25rem;
   }
 
   .facts {
@@ -149,7 +161,11 @@ const media = await Promise.all(
 
   .hero {
     aspect-ratio: 4 / 5;
+    width: var(--hero-w);
+    height: calc(var(--hero-w) * 1.25);
+    align-self: center;
     overflow: hidden;
+    box-shadow: var(--shadow-photo);
   }
 
   .hero :global(img) {
@@ -161,12 +177,13 @@ const media = await Promise.all(
   .media {
     width: min(100%, 1440px);
     margin-inline: auto;
+    padding-inline: var(--gutter);
   }
 
   .next {
     display: block;
-    margin-top: clamp(4rem, 10vw, 8rem);
-    border-block: 1px solid var(--line);
+    margin-top: clamp(2rem, 5vw, 4rem);
+    border-top: 1px solid var(--line);
   }
 
   .next-inner {
@@ -205,10 +222,21 @@ const media = await Promise.all(
   @media (max-width: 760px) {
     .head-grid {
       grid-template-columns: 1fr;
+      align-self: start;
+    }
+
+    .piece-head {
+      min-height: 0;
+    }
+
+    .head-grid {
+      --hero-w: 100%;
     }
 
     .hero {
       order: -1;
+      width: 100%;
+      height: auto;
     }
   }
 </style>

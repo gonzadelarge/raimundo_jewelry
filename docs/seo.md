@@ -63,7 +63,7 @@ Nothing here is built. Do it in one change, together with removing `noindex`.
 - [ ] Add structured data: `Organization` (or `LocalBusiness`) on the Home, `Product` or
       `CreativeWork` on a piece page, `BreadcrumbList` where it helps.
 - [ ] Remove `<meta name="robots" content="noindex">`.
-- [ ] Replace placeholder photos, the sample story shared by all 8 pieces, and the draft English
+- [ ] Replace placeholder photos, the sample story shared by the 8 draft pieces, and the draft English
       translation. Duplicate stories across pages are a real ranking problem.
 - [ ] Write the legal pages properly.
 

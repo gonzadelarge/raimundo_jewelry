@@ -27,7 +27,7 @@ check. If you add one, say so in this file.
 
 ## Build
 
-`pnpm build` produces a fully static `dist/`. 29 pages today. `sharp` converts photos and the
+`pnpm build` produces a fully static `dist/`. 31 pages today. `sharp` converts photos and the
 marble backgrounds to WebP in several sizes at build time, which is why the build is slower than
 a text-only Astro site and why `src/assets/` holds the originals.
 

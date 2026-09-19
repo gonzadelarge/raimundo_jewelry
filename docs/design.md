@@ -28,6 +28,18 @@ Theme tokens change with `data-theme` on `<html>`:
 
 `data-veil="soft"` lowers the dark veil to 42%, so more gold veins show. Only El Baixo uses it.
 
+`--shadow-photo` is the drop shadow of a photo that sits in front of another one: the gallery
+product photo and the piece cover photo. It is stronger in the dark theme.
+
+`--scroll-thumb` and `--scroll-thumb-hover` paint the page scrollbar: a 4 px line in the text
+colour at 30%, with no rounding, on a transparent track. It follows the theme. The zoom view hides
+its own scrollbar instead, because the photo already fills the screen.
+
+**One backdrop per view**, set with the `backdrop` prop of `BaseLayout`. `marmol_negro` is
+reserved for El Baixo (`negro-soft`). Piece pages use `blanco` (`marmol_blanco.png`, light theme).
+Home, Info, Contact and the legal pages use `marfil`. The 404 page uses `burdeos`. The mobile menu
+dialog paints `marmol_negro` on every page, because the menu is always dark.
+
 Layout and motion tokens: `--gutter` (`clamp(1rem, 4vw, 3.5rem)`), `--header-h` (`4.5rem`),
 `--ease-out` and `--ease-move`.
 
@@ -73,7 +85,15 @@ Helper classes in `global.css`:
   fallback.
 - Mobile breakpoint is **760 px**. The mobile menu closes itself above 761 px.
 - Photos are always `<Image>` from `astro:assets` with explicit `widths` and `sizes`. Never a raw
-  `<img>` with a `src` from `src/assets/`.
+  `<img>` with a `src` from `src/assets/`. The React island is the exception: it gets plain `src`
+  and `srcSet` strings built with `getImage()` in `PieceView.astro`.
+- **The piece cover sizes itself from the screen.** `--hero-w` in `PieceView.astro` is
+  `min(calc((100svh - var(--header-h) - 7rem) * 0.8), 44vw)`. The photo takes that width and
+  `width * 1.25` as its height, so the 4:5 ratio is exact and the photo can never be taller than
+  the screen. The text column is `align-content: space-between`, so both columns start and end on
+  the same line.
+- **A grid item stretches.** A link with an underline inside a grid runs the line across the whole
+  column unless it gets `justify-self: start`. That is why the `Volver` link carries it.
 
 ## Motion
 
@@ -82,8 +102,15 @@ Helper classes in `global.css`:
 | Effect | Trigger | Detail |
 |---|---|---|
 | Reveal | `data-reveal` | Fade in and move up 1.75rem when the element enters the viewport. `IntersectionObserver`, threshold 0.05. |
-| Parallax | `data-parallax` | Moves at 8% of the distance to the viewport centre. Uses the `translate` property, kept separate from the reveal `transform`. |
+| Parallax | `data-parallax` | Moves at 22% of the distance to the viewport centre. Uses the `translate` property, kept separate from the reveal `transform`. |
 | Header state | scroll | `data-scrolled` after 24 px. |
+
+**The piece media mosaic.** On screens above 760 px the photo block starts packed into one
+screen and breaks apart into its column as you scroll. `src/components/react/mosaic.ts` packs the
+mosaic in justified rows, so every photo keeps its own ratio and the animation needs only one
+uniform scale. The script writes `transform` on each item and `--break` on the grid, which is the
+scroll distance the effect uses. Real layout never moves. It is off below 761 px and under
+`prefers-reduced-motion: reduce`.
 
 Page transitions use Astro's `ClientRouter`:
 
@@ -100,6 +127,19 @@ stretch while moving.
 
 Browsers without the View Transitions API load pages normally, with no animation. Navigation
 still works.
+
+## The zoom view
+
+The lightbox is a native `<dialog>` opened with `showModal()`, three rows: toolbar, photo, arrows.
+
+- It locks the page scroll while it is open, and adds a `padding-right` the width of the
+  scrollbar, so nothing jumps sideways. The lock is released on the dialog's `close` event, which
+  also covers `Esc`.
+- The photo keeps its height. One taller than the screen scrolls inside the dialog, with
+  `overscroll-behavior: contain` and no visible scrollbar. `place-items: safe center` keeps the
+  top of a tall photo reachable; plain `center` would cut it.
+- A drag down closes the zoom only when the photo fits. On a photo that scrolls, a drag down
+  scrolls.
 
 ## Accessibility
 

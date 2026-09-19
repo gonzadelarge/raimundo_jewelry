@@ -7,15 +7,16 @@ Entry point for AI agents. Read this first, then load only the documents your ta
 Static website for **Raimundo**, contemporary jewelry made in El Baixo, Valencia. It is a catalogue
 and a contact channel, not a shop. Two languages: Spanish at the root, English under `/en`.
 
-State: **draft v0**. Structure, navigation and transitions are built and reviewed. Almost all
-photos, piece data and English copy are placeholders. Every page carries `noindex`. The site is
-not launched.
+State: **draft v0, first real piece in**. Structure, navigation and transitions are built and
+reviewed. `Wired` is the first real piece, with its own photos and story. The other 8 pieces, most
+photos and the English copy are still placeholders. Every page carries `noindex`. The site is not
+launched.
 
 Brand line: `Luxury jewelry with an underground spirit.` / `Hecho en El Baixo.`
 
 ## Stack
 
-Astro 7.3.2, static output. React 19 for one island (the lightbox). Plain CSS, no Tailwind, no
+Astro 7.3.2, static output. React 19 for one island (the piece photo grid and its zoom view). Plain CSS, no Tailwind, no
 Sass. TypeScript strict, `@/*` maps to `src/*`. Node >= 24, pnpm. Deploys to Cloudflare from
 `dist/`.
 
@@ -31,7 +32,7 @@ pnpm check    # astro check, must stay at 0 errors
 |---|---|
 | `src/pages/` | Routes only. Each file is 5-16 lines and passes `locale` to a view. Never put markup here. |
 | `src/views/` | One template per view. Spanish and English share the same template. |
-| `src/components/` | Header, Footer, brand SVGs, gallery blocks, the React lightbox. |
+| `src/components/` | Header, Footer, brand SVGs, gallery blocks, the React photo grid. |
 | `src/data/pieces.ts` | The catalogue. One array, in gallery order. |
 | `src/data/photos.ts` | Photo imports and the photo sets used by views. |
 | `src/data/site.ts` | Email, Instagram, WhatsApp. |
@@ -42,7 +43,7 @@ pnpm check    # astro check, must stay at 0 errors
 | `src/assets/` | Photos and marble backgrounds processed by Astro at build time. |
 | `public/` | Files served as they are: favicon, Carla Sans woff2. |
 | `texts/` | Brand source documents from the client. Read-only input, not site content. |
-| `images/` | Untracked drop folder for new piece material. Not used by the build. |
+| `images/` | Untracked drop folder for new piece material. Not used by the build. `piece_1` (Wired) is already in the site; `piece_2` is not. |
 
 Content rule: text goes in `src/i18n/copy.ts` or `src/data/pieces.ts`, never hardcoded in a view.
 Style tokens go in `global.css`, never as literal hex values in a component.
@@ -73,11 +74,14 @@ historical. `docs/decisions.md` summarises what matters from them.
 2. **The gallery product photo** (`photo-a` in `PieceSpread.astro`) must not get `data-reveal` or
    `data-parallax`, and must keep the 4:5 ratio in the gallery, the piece header and the
    next-piece block. Break either and the shared-photo transition lands on a hidden or stretched
-   image.
-3. **Both languages, always.** A new text field needs `es` and `en`. A new route needs an entry in
+   image. On the piece page the ratio is held by `--hero-w`, which sizes the photo from the height
+   left on screen. Do not swap it for a `max-height`, because that breaks the ratio.
+3. **`marmol_negro` belongs to El Baixo only.** Piece pages use `blanco`. See
+   [docs/design.md](docs/design.md).
+4. **Both languages, always.** A new text field needs `es` and `en`. A new route needs an entry in
    the route map and a page under both `src/pages/` and `src/pages/en/`.
-4. **TypeScript stays on 6.x.** `astro check` does not work with TypeScript 7 yet.
-5. Run `pnpm check` after any change to `src/`. It must report 0 errors.
+5. **TypeScript stays on 6.x.** `astro check` does not work with TypeScript 7 yet.
+6. Run `pnpm check` after any change to `src/`. It must report 0 errors.
 
 ## Open questions
 

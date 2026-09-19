@@ -31,6 +31,10 @@
   --line: rgb(17 17 17 / 0.18);
   --veil: rgb(243 239 231 / 0.72);
   --accent: var(--carbon);
+  /* Cast by the photo that sits in front of another one. */
+  --shadow-photo: 2rem 2.25rem 4.5rem rgb(17 17 17 / 0.45);
+  --scroll-thumb: rgb(17 17 17 / 0.3);
+  --scroll-thumb-hover: rgb(17 17 17 / 0.55);
 }
 
 html[data-theme="dark"] {
@@ -40,6 +44,9 @@ html[data-theme="dark"] {
   --line: rgb(243 239 231 / 0.2);
   --veil: rgb(17 17 17 / 0.6);
   --accent: var(--ambar);
+  --shadow-photo: 2rem 2.25rem 4.5rem rgb(17 17 17 / 0.75);
+  --scroll-thumb: rgb(243 239 231 / 0.3);
+  --scroll-thumb-hover: rgb(243 239 231 / 0.55);
 }
 
 html[data-veil="soft"] {
@@ -122,6 +129,41 @@ ol {
   color: var(--carbon);
 }
 
+/* ---------- Scrollbar ---------- */
+
+/* A thin line, no rounding, the colour of the text at low strength. It follows
+   the theme, so it reads on marfil and on carbón. Firefox takes the two
+   properties below; the rest take the ::-webkit- rules. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  /* The border cuts the thumb down to a 4 px line without losing the grab area. */
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 /* ---------- Marble background layer ---------- */
 
 .backdrop {
@@ -146,6 +188,11 @@ ol {
 main {
   display: block;
   padding-top: var(--header-h);
+}
+
+/* The piece page ends with the next-piece band, so the footer joins it directly. */
+body[data-page="piece"] .site-footer {
+  margin-top: 0;
 }
 
 .skip-link {
