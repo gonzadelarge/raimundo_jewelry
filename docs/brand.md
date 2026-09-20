@@ -17,12 +17,12 @@ The website is the centre of the brand online. Instagram is the daily channel.
 
 ## Positioning
 
-`Luxury jewelry with an underground spirit.` (`Joyería de lujo con espíritu underground.`)
+`Luxury jewelry with an underground spirit` (`Joyería de lujo con espíritu underground`)
 
 Contemporary handmade jewelry that combines workshop craft, 3D precision and an alternative,
 cultural, limited-edition look. Made in Valencia, in a workshop called **El Baixo**.
 
-`Hecho en El Baixo.` works as a signature and an origin stamp. It does not only mean the place of
+`Hecho en El Baixo` works as a signature and an origin stamp. It does not only mean the place of
 manufacture. It means the ideas, tests, people and collaborations that end up inside each piece.
 
 ## Audience
@@ -87,8 +87,11 @@ Do not write copy that drifts into these. They dilute the identity.
 
 Fixed strings, do not paraphrase:
 
-- `Luxury jewelry with an underground spirit.` (stays in English in both languages)
-- `Hecho en El Baixo.` / `Made in El Baixo.`
+- `Luxury jewelry with an underground spirit` (stays in English in both languages). The home
+  headline is cut to `Luxury jewelry underground spirit`, so it breaks into three short lines.
+- `Hecho en El Baixo` / `Made in El Baixo`
+
+Both lines are set without a full stop. They are headlines, not sentences.
 - `Carácter · Curiosidad · Cuidado · Cercanía`
 
 People named on the site: **Jesús** (founder, designer, jeweler) and **Rudi** (Rodolfo Navarro

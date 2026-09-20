@@ -98,11 +98,32 @@ Helper classes in `global.css`:
   `min(100%, 1280px)`, the same width as `.spread`. Both the collage and the claim take it, so the
   claim text starts on the gallery's left edge and lands on the photos. With `.shell` (1440px) the
   text sat further left than everything below it.
-- **The home collage is 9 absolute tiles**, sized from 12% to 25% of the collage box. Every tile
-  overlaps a neighbour and carries `--shadow-collage`, so the block reads as one wall instead of a
-  row of photos. `z-index` runs 1 to 9 and the claim sits at 10. Tile 8 is the only one under the
-  claim text, so it must stay a light photo: carbón type over a dark photo is unreadable. The dark
-  ones go on the right. Mobile shows tiles 1 to 5 only, one per piece.
+- **The home collage is 5 absolute tiles**, one per piece, the same five on desktop and mobile.
+  Every tile overlaps its neighbour on both axes and carries `--shadow-collage`, so the block
+  reads as one wall instead of a row of photos. `z-index` runs 1 to 5 and the claim sits at 10.
+  Tile 3 is the large one in front and the only tile the title reaches, so it must stay a light
+  photo: carbón type over a dark photo is unreadable. The dark ones go on the right.
+- **The home hero has two separate layouts, not one that adapts.** `Opening.astro` holds a shared
+  block with no sizes in it, then `@media (min-width: 761px)` and `@media (max-width: 760px)`,
+  each with its own `--collage-w`, tile grid and overlap. They are independent on purpose: an
+  earlier version drove both from one unit and every fix to one broke the other.
+- **The hero collage has a parallax rate per tile**, set in `Opening.astro` as `tileParallax`.
+  The rates are negative, from `-0.08` to `-0.30`, so every tile climbs as the page goes down and
+  the wall pulls apart, the way the two photos of a gallery spread separate. The claim runs the
+  other way at `0.06`, so the photos always move away from the text and the title is never
+  buried. `0.06` also keeps the claim inside the hero's bottom padding, off the gallery below.
+  All of them carry `data-parallax-zero`.
+- **Each layout is three numbers.** `--collage-w` is how wide the wall is, the `aspect-ratio` on
+  `.collage` is how tall, and the negative `margin-top` on `.claim` is how far the title rides
+  into it. The collage sits in the flow and the claim follows it, so the overlap is a fixed
+  distance and never drifts with the viewport height. Only the cap inside `--collage-w` reads
+  `svh`, and only to stop the wall growing past a short screen. The title reaches the photos on
+  its **first line only**, and only tile 3, which is why tile 3 must stay a light photo.
+- **The home title breaks at most two words per line.** `.claim-main` is
+  `clamp(2.4rem, 5.2vw, 4.4rem)` on desktop and `clamp(2rem, 9.5vw, 2.9rem)` on mobile, with
+  `max-width: 9.5em`, which gives
+  LUXURY JEWELRY / UNDERGROUND / SPIRIT. The width is in em, not percent, so the same break shape
+  survives every screen size. Do not add `text-wrap: balance`: it undoes it.
 - **The gallery spread has five variants**, picked by `index % 5`, so five pieces never repeat a
   composition. All five overlap the two photos by about one column. In v1, v3 and v4 the product
   photo starts **below the middle** of the worn photo. Keep it there: a portrait worn shot puts the
@@ -115,7 +136,8 @@ Helper classes in `global.css`:
 | Effect | Trigger | Detail |
 |---|---|---|
 | Reveal | `data-reveal` | Fade in and move up 1.75rem when the element enters the viewport. `IntersectionObserver`, threshold 0.05. |
-| Parallax | `data-parallax` | Moves at 22% of the distance to the viewport centre. Uses the `translate` property, kept separate from the reveal `transform`. |
+| Parallax | `data-parallax` | Moves at 22% of the distance to the viewport centre. A number on the attribute, `data-parallax="0.07"`, sets its own rate, so several elements in one block read as near and far. Uses the `translate` property, kept separate from the reveal `transform`. |
+| Parallax from rest | `data-parallax-zero` | Same, but the element starts exactly where CSS puts it and drifts by `scrollY * rate`. The home hero uses it, because the normal rule would pull the collage off its own layout before any scroll. |
 | Header state | scroll | `data-scrolled` after 24 px. |
 
 **The piece media mosaic.** On screens above 760 px the photo block starts packed into one

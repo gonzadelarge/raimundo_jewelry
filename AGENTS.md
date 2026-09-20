@@ -13,7 +13,7 @@ photos and stories, and the home hero uses their photos. The 8 invented placehol
 Info and El Baixo photos and the English copy are still placeholders. Every page carries
 `noindex`. The site is not launched.
 
-Brand line: `Luxury jewelry with an underground spirit.` / `Hecho en El Baixo.`
+Brand line: `Luxury jewelry with an underground spirit` / `Hecho en El Baixo`, no full stop.
 
 ## Stack
 

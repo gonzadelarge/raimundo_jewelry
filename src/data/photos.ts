@@ -64,19 +64,15 @@ export const photos = {
 
 // Home hero collage. One photo per tile, in tile order. Opening.astro sets each tile's ratio,
 // size and position, so the order here is the layout.
-// Tiles 1 to 5 carry one piece each and are the only ones mobile shows.
-// Tiles 7 and 8 sit under the claim text, so they must stay light: carbón type over a dark
-// photo is unreadable. The two dark photos, dijoSi02 and budaEva08, go on the right instead.
+// Five tiles, one piece each, the same five on desktop and on mobile.
+// Tile 3 is the large one in front and the only tile the title reaches, so it must stay light:
+// carbón type over a dark photo is unreadable. Dark photos go to tiles 4 and 5, on the right.
 export const openingPhotos = [
   photos.dijoSi01,      // 1  small,  3/4
   photos.trinacria07,   // 2  medium, 4/3
-  photos.wired07,       // 3  large,  4/5, in front
+  photos.wired07,       // 3  large,  4/5, in front, under the title
   photos.laFamiglia06,  // 4  small,  3/4
   photos.budaEva07,     // 5  medium, 4/3
-  photos.dijoSi02,      // 6  medium, 4/5, dark
-  photos.laFamiglia04,  // 7  small,  3/4, behind the claim
-  photos.wired04,       // 8  large,  4/3, behind the claim
-  photos.budaEva08,     // 9  small,  3/4, dark
 ];
 
 export const infoPhotos = {
