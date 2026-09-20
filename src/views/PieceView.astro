@@ -68,10 +68,19 @@ const media = await Promise.all(
           <p class="story">{piece.story[locale]}</p>
 
           <div class="actions">
-            <a class="button" href={`${contactPath}?pieza=${piece.slug}`}>{t.askPiece}</a>
-            <a class="label arrow-link" href={`${contactPath}?pieza=${piece.slug}&motivo=commission`}>
-              {t.similar} <span class="arrow" aria-hidden="true">→</span>
-            </a>
+            {
+              /* A sold piece cannot be asked about, so the commission link becomes the action. */
+              piece.status === "sold" ? (
+                <a class="button" href={`${contactPath}?pieza=${piece.slug}&motivo=commission`}>{t.similar}</a>
+              ) : (
+                <>
+                  <a class="button" href={`${contactPath}?pieza=${piece.slug}`}>{t.askPiece}</a>
+                  <a class="label arrow-link" href={`${contactPath}?pieza=${piece.slug}&motivo=commission`}>
+                    {t.similar} <span class="arrow" aria-hidden="true">→</span>
+                  </a>
+                </>
+              )
+            }
           </div>
         </div>
 

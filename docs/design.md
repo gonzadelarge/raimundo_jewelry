@@ -94,6 +94,19 @@ Helper classes in `global.css`:
   the same line.
 - **A grid item stretches.** A link with an underline inside a grid runs the line across the whole
   column unless it gets `justify-self: start`. That is why the `Volver` link carries it.
+- **The home hero uses the gallery column, not `.shell`.** `--hero-col` in `Opening.astro` is
+  `min(100%, 1280px)`, the same width as `.spread`. Both the collage and the claim take it, so the
+  claim text starts on the gallery's left edge and lands on the photos. With `.shell` (1440px) the
+  text sat further left than everything below it.
+- **The home collage is 9 absolute tiles**, sized from 12% to 25% of the collage box. Every tile
+  overlaps a neighbour and carries `--shadow-collage`, so the block reads as one wall instead of a
+  row of photos. `z-index` runs 1 to 9 and the claim sits at 10. Tile 8 is the only one under the
+  claim text, so it must stay a light photo: carbón type over a dark photo is unreadable. The dark
+  ones go on the right. Mobile shows tiles 1 to 5 only, one per piece.
+- **The gallery spread has five variants**, picked by `index % 5`, so five pieces never repeat a
+  composition. All five overlap the two photos by about one column. In v1, v3 and v4 the product
+  photo starts **below the middle** of the worn photo. Keep it there: a portrait worn shot puts the
+  face in the upper half, the product photo sits in front, and a high overlap cuts the face.
 
 ## Motion
 

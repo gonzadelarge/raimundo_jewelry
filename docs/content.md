@@ -66,9 +66,13 @@ a third of the screen.
 | `unique` | Pieza única | One of a kind |
 | `commission` | Por encargo | Made to order |
 | `archive` | Archivo | Archive |
+| `sold` | Vendida | Sold |
 
 Adding a status value means editing the `PieceStatus` union in `pieces.ts` **and** both `status`
 objects in `src/i18n/ui.ts`.
+
+`sold` also changes the piece page: `PieceView.astro` drops the `Consultar esta pieza` button and
+leaves `Quiero algo similar` as the only action.
 
 After any change: `pnpm check` must report 0 errors, then `pnpm build`.
 
@@ -94,9 +98,10 @@ its own. See [seo.md](seo.md).
 
 | Item | Now | Needs |
 |---|---|---|
-| Piece photos | Wired has 6 real photos. The rest: 8 moodboard photos mixed with 18 picsum placeholders | Product + worn photo per piece |
-| Pieces | Wired is real. 8 invented names share one sample story | Real catalogue from the team |
-| Opening, Info, El Baixo photos | Mixed real and random | Workshop, process and people photos |
+| Piece photos | All real: Wired 7, Dijo Sí 5, Trinacria 7, Buda & Eva 8, La Famiglia 6 | Nothing, until new pieces arrive |
+| Pieces | 5 real pieces in the gallery. The 8 invented placeholders were deleted | Rest of the catalogue from the team |
+| Opening (home hero) | Real piece photos, 9 overlapping tiles, 1 or 2 per piece | Nothing |
+| Info and El Baixo photos | Mixed moodboard and picsum placeholders | Workshop, process and people photos |
 | People names in El Baixo | "Nombre" | Real first names |
 | English copy | Draft translation | Review by a person |
 | Legal pages | One sentence | Real legal texts |
@@ -104,7 +109,8 @@ its own. See [seo.md](seo.md).
 
 `images/` is an untracked drop folder for new piece material. Nothing in the build reads it.
 Copying the photos into `src/assets/photos/` and writing the entry in `src/data/pieces.ts` is the
-normal path for real content. `piece_1` (Wired) went through it already. `piece_2` is waiting.
+normal path for real content. `piece_1` (Wired), `piece_2` (Dijo Sí), `piece_3` (Trinacria),
+`piece_4` (Buda & Eva) and `piece_5` (La Famiglia) went through it already.
 
 The `description.md` the client writes in that folder is source material, not site copy. Condense
 it into 2 to 5 lines for the `story` field and drop the markdown marks; the field is plain text.

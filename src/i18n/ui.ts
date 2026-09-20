@@ -24,6 +24,7 @@ export const ui = {
       unique: "Pieza única",
       commission: "Por encargo",
       archive: "Archivo",
+      sold: "Vendida",
     },
     lightbox: {
       open: "Ampliar imagen",
@@ -62,6 +63,7 @@ export const ui = {
       unique: "One of a kind",
       commission: "Made to order",
       archive: "Archive",
+      sold: "Sold",
     },
     lightbox: {
       open: "Enlarge image",
