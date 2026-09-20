@@ -2,8 +2,8 @@
 // English is a draft translation, to be reviewed.
 export const copy = {
   es: {
-    slogan: "Luxury jewelry with an underground spirit.",
-    origin: "Hecho en El Baixo.",
+    slogan: "Luxury jewelry underground spirit",
+    origin: "Hecho en El Baixo",
     fourC: ["Carácter", "Curiosidad", "Cuidado", "Cercanía"],
     meta: {
       home: "Joyería contemporánea creada en Valencia. Colecciones limitadas, piezas únicas y encargos hechos en El Baixo.",
@@ -81,8 +81,8 @@ export const copy = {
     },
   },
   en: {
-    slogan: "Luxury jewelry with an underground spirit.",
-    origin: "Made in El Baixo.",
+    slogan: "Luxury jewelry underground spirit",
+    origin: "Made in El Baixo",
     fourC: ["Character", "Curiosity", "Care", "Closeness"],
     meta: {
       home: "Contemporary jewelry made in Valencia. Limited collections, one-of-a-kind pieces and commissions made in El Baixo.",

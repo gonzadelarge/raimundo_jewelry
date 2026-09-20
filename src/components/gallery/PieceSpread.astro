@@ -20,7 +20,7 @@ const [product, worn] = piece.spread;
 <article class={`spread v${variant}`} id={piece.slug}>
   <a class="spread-link" href={piecePath(piece.slug, locale)}>
     <p class="label spread-label">
-      {t.piece} / {title}. <span class="muted">{piece.collection}.</span>
+      {title}
     </p>
 
     <div class="photo photo-a" transition:name={`piece-${piece.slug}`} transition:animate="initial" style="view-transition-class: piece-photo">
@@ -35,9 +35,6 @@ const [product, worn] = piece.spread;
 
     <div class="spread-info" data-reveal>
       <p class="label spread-cta">{t.viewPiece} <span class="arrow" aria-hidden="true">→</span></p>
-      <p class="label muted">
-        {t.status[piece.status]} · {piece.year}{piece.edition && ` · ${piece.edition}`}
-      </p>
     </div>
   </a>
 </article>
@@ -102,6 +99,10 @@ const [product, worn] = piece.spread;
   }
 
   .spread-label {
+    /* Bigger than the 0.75rem of .label: it is the name of the piece, not a caption.
+       It stays under 2.5rem, which is the width of the column it runs down. */
+    font-size: clamp(1rem, 1.6vw, 1.5rem);
+    letter-spacing: 0.12em;
     grid-column: 1;
     grid-row: 1;
     align-self: end;
