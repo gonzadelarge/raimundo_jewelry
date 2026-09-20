@@ -1,6 +1,6 @@
 // Scroll behaviour shared by every view:
 // - [data-reveal] blocks fade in when they enter the screen
-// - [data-parallax] photos move clearly slower than the page
+// - [data-parallax] photos move clearly slower than the page, at 22% or at their own rate
 // - the header gets a background after the first scroll
 // Astro's ClientRouter swaps the page without a reload, so everything is set up again after each swap.
 
@@ -45,7 +45,15 @@ function updateScroll() {
   for (const el of parallaxItems) {
     const rect = el.getBoundingClientRect();
     if (rect.bottom < -200 || rect.top > window.innerHeight + 200) continue;
-    const offset = (rect.top + rect.height / 2 - center) * -0.22;
+    // [data-parallax] on its own moves at 22%. A number sets its own rate, so several
+    // elements in one block can move at different rates and read as near and far.
+    const rate = Number(el.dataset.parallax) || 0.22;
+    // [data-parallax-zero] starts at rest and only drifts as the page scrolls. The hero
+    // needs it: the normal rule moves an element by its distance to the middle of the
+    // screen, which would pull the collage off its own layout before any scroll happens.
+    const offset = el.hasAttribute("data-parallax-zero")
+      ? window.scrollY * rate
+      : (rect.top + rect.height / 2 - center) * -rate;
     el.style.translate = `0 ${offset.toFixed(1)}px`;
   }
 }

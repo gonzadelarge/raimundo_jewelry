@@ -107,6 +107,12 @@ Helper classes in `global.css`:
   block with no sizes in it, then `@media (min-width: 761px)` and `@media (max-width: 760px)`,
   each with its own `--collage-w`, tile grid and overlap. They are independent on purpose: an
   earlier version drove both from one unit and every fix to one broke the other.
+- **The hero collage has a parallax rate per tile**, set in `Opening.astro` as `tileParallax`.
+  The rates are negative, from `-0.08` to `-0.30`, so every tile climbs as the page goes down and
+  the wall pulls apart, the way the two photos of a gallery spread separate. The claim runs the
+  other way at `0.06`, so the photos always move away from the text and the title is never
+  buried. `0.06` also keeps the claim inside the hero's bottom padding, off the gallery below.
+  All of them carry `data-parallax-zero`.
 - **Each layout is three numbers.** `--collage-w` is how wide the wall is, the `aspect-ratio` on
   `.collage` is how tall, and the negative `margin-top` on `.claim` is how far the title rides
   into it. The collage sits in the flow and the claim follows it, so the overlap is a fixed
@@ -130,7 +136,8 @@ Helper classes in `global.css`:
 | Effect | Trigger | Detail |
 |---|---|---|
 | Reveal | `data-reveal` | Fade in and move up 1.75rem when the element enters the viewport. `IntersectionObserver`, threshold 0.05. |
-| Parallax | `data-parallax` | Moves at 22% of the distance to the viewport centre. Uses the `translate` property, kept separate from the reveal `transform`. |
+| Parallax | `data-parallax` | Moves at 22% of the distance to the viewport centre. A number on the attribute, `data-parallax="0.07"`, sets its own rate, so several elements in one block read as near and far. Uses the `translate` property, kept separate from the reveal `transform`. |
+| Parallax from rest | `data-parallax-zero` | Same, but the element starts exactly where CSS puts it and drifts by `scrollY * rate`. The home hero uses it, because the normal rule would pull the collage off its own layout before any scroll. |
 | Header state | scroll | `data-scrolled` after 24 px. |
 
 **The piece media mosaic.** On screens above 760 px the photo block starts packed into one

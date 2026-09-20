@@ -9,20 +9,27 @@ interface Props {
 
 const { locale } = Astro.props;
 const c = copy[locale];
+// Parallax rate per tile, in tile order. Negative means the tile climbs as the page goes
+// down, so the wall pulls apart while you scroll, the same way the two photos of a gallery
+// spread separate. The spread between the rates is what you see: 0.08 against 0.30 is more
+// than 200px of daylight by the time the hero leaves the screen.
+// Every tile moves away from the text and the claim moves the other way, so the title is
+// never buried. Tile 4 is the smallest and furthest back, tile 5 is in front.
+const tileParallax = [-0.2, -0.26, -0.14, -0.3, -0.08];
 ---
 
 <section class="opening" aria-labelledby="opening-title">
   <div class="collage" aria-hidden="true">
     {
       openingPhotos.map((photo, index) => (
-        <div class={`tile tile-${index + 1}`} data-reveal style={`transition-delay:${index * 70}ms`}>
+        <div class={`tile tile-${index + 1}`} data-reveal data-parallax={tileParallax[index]} data-parallax-zero style={`transition-delay:${index * 70}ms`}>
           <Image src={photo} alt="" widths={[240, 320, 420, 560, 760]} sizes="(max-width: 760px) 50vw, 30vw" loading={index < 3 ? "eager" : "lazy"} />
         </div>
       ))
     }
   </div>
 
-  <div class="claim shell">
+  <div class="claim shell" data-parallax="0.06" data-parallax-zero>
     <h1 id="opening-title" class="label claim-main">{c.slogan}</h1>
     <p class="label claim-origin"><span class="star" aria-hidden="true"></span> {c.origin}</p>
     <p class="intro muted">{c.home.intro}</p>
