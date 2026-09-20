@@ -15,8 +15,8 @@ const c = copy[locale];
   <div class="collage" aria-hidden="true">
     {
       openingPhotos.map((photo, index) => (
-        <div class={`tile tile-${index + 1}`} data-reveal style={`transition-delay:${index * 90}ms`}>
-          <Image src={photo} alt="" widths={[320, 520, 760]} sizes="(max-width: 760px) 50vw, 26vw" loading={index < 3 ? "eager" : "lazy"} />
+        <div class={`tile tile-${index + 1}`} data-reveal style={`transition-delay:${index * 70}ms`}>
+          <Image src={photo} alt="" widths={[240, 320, 420, 560, 760]} sizes="(max-width: 760px) 46vw, 26vw" loading={index < 3 ? "eager" : "lazy"} />
         </div>
       ))
     }
@@ -31,6 +31,10 @@ const c = copy[locale];
 
 <style>
   .opening {
+    /* The same column the gallery spreads use, not the 1440px of .shell. The claim text
+       then starts on the gallery's left edge instead of hanging off to the side, and the
+       collage narrows with it, so the text lands on the photos. */
+    --hero-col: min(100%, 1280px);
     position: relative;
     min-height: calc(100svh - var(--header-h));
     display: grid;
@@ -41,7 +45,7 @@ const c = copy[locale];
   .collage {
     position: absolute;
     inset: 0;
-    width: min(100%, 1440px);
+    width: var(--hero-col);
     margin-inline: auto;
     pointer-events: none;
   }
@@ -49,6 +53,8 @@ const c = copy[locale];
   .tile {
     position: absolute;
     overflow: hidden;
+    /* The tiles overlap, so each one needs to lift off the one behind it. */
+    box-shadow: var(--shadow-collage);
   }
 
   .tile :global(img) {
@@ -57,19 +63,27 @@ const c = copy[locale];
     object-fit: cover;
   }
 
-  /* Loose collage, Aristizabal style. Positions in % of the first screen. */
-  .tile-1 { left: 6%; top: 18%; width: 17%; aspect-ratio: 3 / 4; }
-  .tile-2 { left: 27%; top: 6%; width: 22%; aspect-ratio: 4 / 3; }
-  .tile-3 { left: 44%; top: 30%; width: 19%; aspect-ratio: 4 / 5; z-index: 1; }
-  .tile-4 { left: 66%; top: 10%; width: 14%; aspect-ratio: 3 / 4; }
-  .tile-5 { left: 78%; top: 36%; width: 16%; aspect-ratio: 3 / 4; }
+  /* A wall, not a row. Every tile overlaps at least one neighbour, and the sizes run from
+     12% to 25% of the collage box so the wall has a clear near and far.
+     `z-index` sets the stacking on purpose: the claim sits at 10, so tiles stay below it.
+     Tile 8 is the only one under the claim text, so it must stay a light photo. */
+  .tile-1 { left: 1%;  top: 14%; width: 13%; aspect-ratio: 3 / 4; z-index: 1; }
+  .tile-2 { left: 11%; top: 2%;  width: 20%; aspect-ratio: 4 / 3; z-index: 2; }
+  .tile-3 { left: 30%; top: 11%; width: 25%; aspect-ratio: 4 / 5; z-index: 6; }
+  .tile-4 { left: 52%; top: 3%;  width: 12%; aspect-ratio: 3 / 4; z-index: 3; }
+  .tile-5 { left: 62%; top: 14%; width: 22%; aspect-ratio: 4 / 3; z-index: 4; }
+  .tile-6 { left: 60%; top: 38%; width: 19%; aspect-ratio: 4 / 5; z-index: 7; }
+  .tile-7 { left: 4%;  top: 36%; width: 15%; aspect-ratio: 3 / 4; z-index: 5; }
+  .tile-8 { left: 16%; top: 55%; width: 23%; aspect-ratio: 4 / 3; z-index: 8; }
+  .tile-9 { left: 74%; top: 58%; width: 16%; aspect-ratio: 3 / 4; z-index: 9; }
 
   .claim {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     display: grid;
     gap: 0.6rem;
-    width: 100%;
+    width: var(--hero-col);
+    margin-inline: auto;
   }
 
   .claim-main {
@@ -87,10 +101,16 @@ const c = copy[locale];
       min-height: calc(92svh - var(--header-h));
     }
 
-    .tile-1 { left: 4%; top: 6%; width: 44%; }
-    .tile-2 { left: 52%; top: 14%; width: 44%; }
-    .tile-3 { left: 26%; top: 34%; width: 40%; }
-    .tile-4,
-    .tile-5 { display: none; }
+    /* Five tiles on mobile, one per piece, overlapping like the desktop wall. */
+    .tile-1 { left: 2%;  top: 3%;  width: 40%; }
+    .tile-2 { left: 34%; top: 10%; width: 50%; }
+    .tile-3 { left: 14%; top: 27%; width: 46%; }
+    .tile-4 { left: 56%; top: 40%; width: 30%; }
+    .tile-5 { left: 30%; top: 55%; width: 44%; }
+
+    .tile-6,
+    .tile-7,
+    .tile-8,
+    .tile-9 { display: none; }
   }
 </style>

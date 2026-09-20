@@ -33,6 +33,8 @@
   --accent: var(--carbon);
   /* Cast by the photo that sits in front of another one. */
   --shadow-photo: 2rem 2.25rem 4.5rem rgb(17 17 17 / 0.45);
+  /* Smaller version, for the overlapping tiles of the home collage. */
+  --shadow-collage: 0.7rem 0.9rem 2.25rem rgb(17 17 17 / 0.22);
   --scroll-thumb: rgb(17 17 17 / 0.3);
   --scroll-thumb-hover: rgb(17 17 17 / 0.55);
 }
@@ -45,6 +47,7 @@ html[data-theme="dark"] {
   --veil: rgb(17 17 17 / 0.6);
   --accent: var(--ambar);
   --shadow-photo: 2rem 2.25rem 4.5rem rgb(17 17 17 / 0.75);
+  --shadow-collage: 0.7rem 0.9rem 2.25rem rgb(17 17 17 / 0.55);
   --scroll-thumb: rgb(243 239 231 / 0.3);
   --scroll-thumb-hover: rgb(243 239 231 / 0.55);
 }
