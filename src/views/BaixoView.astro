@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { copy, otherLocale, routePath, type Locale } from "@/i18n";
 import { baixoPhotos } from "@/data/photos";
@@ -10,6 +10,45 @@ interface Props {
 
 const { locale } = Astro.props;
 const c = copy[locale];
+
+// The header video lives in public/, so the build does not touch it.
+// The poster is the first thing on screen, so it is a processed image, not the raw photo.
+const poster = await getImage({ src: baixoPhotos.rudiWide, format: "webp", width: 1600, quality: 70 });
+
+// The three middle sections are the same band: number, title, deck, body, photo, statement.
+// The number is a digit pair, so it needs no translation. `flip` puts the photo on the left,
+// so two bands in a row never have the same shape. Each photo drifts at its own parallax
+// rate, the way the two photos of a gallery spread separate.
+type Band = {
+  n: string;
+  text: {
+    title: string;
+    lead: string;
+    body: readonly string[];
+    closing: string;
+  };
+  photo: ImageMetadata;
+  alt: string;
+  ratio: "wide" | "tall";
+  flip: boolean;
+  rate: string;
+  wide?: ImageMetadata;
+};
+
+const bands: Band[] = [
+  { n: "01", text: c.baixo.project, photo: baixoPhotos.project, alt: "", ratio: "wide", flip: false, rate: "0.06" },
+  { n: "02", text: c.baixo.people, photo: baixoPhotos.people, alt: "", ratio: "tall", flip: true, rate: "0.09" },
+  {
+    n: "03",
+    text: c.baixo.rudi,
+    photo: baixoPhotos.rudi,
+    alt: c.baixo.rudi.photoAlt,
+    ratio: "tall",
+    flip: false,
+    rate: "0.05",
+    wide: baixoPhotos.rudiWide,
+  },
+];
 ---
 
 <BaseLayout
@@ -20,188 +59,369 @@ const c = copy[locale];
   current="baixo"
   backdrop="negro-soft"
 >
-  <section class="lead-block">
-    <div class="lead-photo">
-      <Image src={baixoPhotos.lead} alt="" widths={[800, 1200, 1600]} sizes="100vw" loading="eager" />
-    </div>
-    <div class="shell lead-text panel" data-reveal>
-      <h1 class="title">{c.baixo.title}</h1>
-      <div class="prose lead">
-        {c.baixo.intro.map((paragraph) => <p>{paragraph}</p>)}
+  <section class="hero" aria-labelledby="baixo-title">
+    <div class="hero-frame" aria-hidden="true">
+      <div class="hero-move" data-parallax="-0.05" data-parallax-zero>
+        <video autoplay muted loop playsinline preload="metadata" poster={poster.src} tabindex="-1">
+          <source src="/video/baixo.mp4" type="video/mp4" />
+        </video>
       </div>
+    </div>
+
+    <div class="shell hero-claim" data-parallax="0.05" data-parallax-zero>
+      <p class="label mark"><span class="star" aria-hidden="true"></span> {c.origin}</p>
+      <h1 id="baixo-title" class="title hero-title">{c.baixo.title}</h1>
     </div>
   </section>
 
-  <section class="shell history">
-    <div class="history-text panel" data-reveal>
-      <h2 class="title-sm">{c.baixo.historyTitle}</h2>
-      <div class="prose">
-        {c.baixo.history.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
+  <section class="shell intro">
+    <p class="deck" data-reveal>{c.baixo.intro.lead}</p>
+    <div class="body" data-reveal style="transition-delay:90ms">
+      {c.baixo.intro.body.map((paragraph) => <p>{paragraph}</p>)}
     </div>
-    {
-      baixoPhotos.history.map((photo, index) => (
-        <div class={`history-photo h${index}`} data-reveal>
-          <Image src={photo} alt="" widths={[400, 700]} sizes="(max-width: 760px) 80vw, 30vw" />
+    <p class="statement" data-reveal>
+      <span class="star" aria-hidden="true"></span>{c.baixo.intro.closing}
+    </p>
+  </section>
+
+  {
+    bands.map((band) => (
+      <section class={`shell band${band.flip ? " flip" : ""}`} aria-labelledby={`band-${band.n}`}>
+        <div class="band-head" data-reveal>
+          <p class="label n">{band.n}</p>
+          <h2 id={`band-${band.n}`} class="title band-title">
+            {band.text.title}
+          </h2>
         </div>
-      ))
-    }
-  </section>
 
-  <section class="shell people">
-    <div class="panel people-text" data-reveal>
-      <h2 class="title-sm">{c.baixo.peopleTitle}</h2>
-      <p>{c.baixo.people}</p>
-    </div>
-    <ul class="people-grid">
-      {
-        baixoPhotos.people.map((photo, index) => (
-          <li data-reveal style={`transition-delay:${index * 80}ms`}>
-            <div class="person-photo">
-              <Image src={photo} alt="" widths={[300, 500]} sizes="(max-width: 760px) 45vw, 22vw" />
+        <div class="band-text" data-reveal style="transition-delay:90ms">
+          <p class="deck">{band.text.lead}</p>
+          <div class="body">
+            {band.text.body.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+        </div>
+
+        <div class={`photo ${band.ratio}`} data-parallax={band.rate}>
+          <div data-reveal>
+            <Image src={band.photo} alt={band.alt} widths={[500, 800, 1200]} sizes="(max-width: 760px) 100vw, 42vw" />
+          </div>
+        </div>
+
+        <p class="statement" data-reveal>
+          <span class="star" aria-hidden="true" />
+          {band.text.closing}
+        </p>
+
+        {band.wide && (
+          <div class="photo band-wide" data-parallax="0.04">
+            <div data-reveal>
+              <Image src={band.wide} alt="" widths={[900, 1400, 1900]} sizes="100vw" />
             </div>
-            <p class="label">{c.baixo.peopleNames[index]}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+          </div>
+        )}
+      </section>
+    ))
+  }
 
-  <section class="shell rudi">
-    <div class="rudi-photo" data-reveal>
-      <Image src={baixoPhotos.rudi} alt="" widths={[400, 700]} sizes="(max-width: 760px) 100vw, 36vw" />
+  <section class="shell made" aria-labelledby="made-title">
+    <p class="label mark" data-reveal><span class="star" aria-hidden="true"></span> {c.origin}</p>
+    <h2 id="made-title" class="made-title" data-reveal style="transition-delay:80ms">{c.baixo.made.lead}</h2>
+    <div class="body" data-reveal style="transition-delay:160ms">
+      {c.baixo.made.body.map((paragraph) => <p>{paragraph}</p>)}
     </div>
-    <div class="panel" data-reveal>
-      <h2 class="title-sm">{c.baixo.rudiTitle}</h2>
-      <p>{c.baixo.rudi}</p>
-    </div>
-  </section>
-
-  <section class="shell closing">
-    <div class="panel" data-reveal>
-      <p class="title-sm">{c.origin}</p>
-      <p>{c.baixo.closing}</p>
-    </div>
+    <p class="made-sign label" data-reveal style="transition-delay:240ms">{c.baixo.made.closing}</p>
   </section>
 </BaseLayout>
 
-<style>
-  /* Text sits on a plain block, because the soft veil lets the gold veins show. */
-  .panel {
-    display: grid;
-    gap: 1.25rem;
-    align-content: start;
-    padding: clamp(1.25rem, 3vw, 2.5rem);
-    background: rgb(17 17 17 / 0.78);
+<script>
+  // The header video loops on its own. With reduced motion it stays on the poster frame.
+  function holdVideo() {
+    const video = document.querySelector<HTMLVideoElement>(".hero-frame video");
+    if (!video) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.removeAttribute("autoplay");
+      video.pause();
+    }
   }
+
+  holdVideo();
+  document.addEventListener("astro:page-load", holdVideo);
+</script>
+
+<style>
+  /* No boxes behind the text. The soft veil keeps the marble dark enough to read marfil
+     type straight on it, the way the home claim sits straight on the collage. */
 
   section + section {
-    margin-top: clamp(6rem, 14vw, 12rem);
+    margin-top: clamp(5rem, 12vw, 10rem);
   }
 
-  .lead-block {
-    position: relative;
+  /* ---------- The type scale of this view ----------
+     One display size far above everything else, one reading size far below it, and the
+     label between them. The distance between the three is the layout. */
+
+  .hero-title {
+    font-size: clamp(2.6rem, 9vw, 7rem);
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    max-width: 11em;
   }
 
-  .lead-photo {
-    height: min(78svh, 52rem);
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    letter-spacing: 0.2em;
+  }
+
+  .deck {
+    max-width: 24ch;
+    font-size: clamp(1.15rem, 2vw, 1.7rem);
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .body {
+    max-width: 38ch;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.9;
+  }
+
+  .body p + p {
+    margin-top: 1.2em;
+  }
+
+  /* The closing line of every section, set as display type over a filete. */
+  .statement {
+    max-width: 20ch;
+    padding-top: clamp(1rem, 2vw, 1.75rem);
+    padding-left: 1.3em;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 2.6rem);
+    letter-spacing: 0.03em;
+    line-height: 1.12;
+    text-transform: uppercase;
+    /* The star hangs in the margin, so the first line starts on the same edge as the rest. */
+    text-indent: -1.3em;
+  }
+
+  .statement .star {
+    margin-right: 0.5em;
+    vertical-align: 0.15em;
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero {
+    display: grid;
+  }
+
+  .hero-frame {
+    height: min(82svh, 54rem);
     overflow: hidden;
+    background: var(--carbon);
   }
 
-  .lead-photo :global(img) {
+  /* The video is taller than its frame, so the parallax drift never opens a gap. */
+  .hero-move {
+    height: 118%;
+    margin-top: -9%;
+  }
+
+  .hero-frame video {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .lead-text {
+  .hero-claim {
     position: relative;
-    width: min(calc(100% - 2 * var(--gutter)), 44rem);
-    margin: -8rem 0 0 var(--gutter);
+    z-index: 2;
+    display: grid;
+    gap: clamp(0.75rem, 1.6vw, 1.25rem);
+    /* The title rides into the video the way the home claim rides into the collage. */
+    margin-top: clamp(-7rem, -9vw, -3.5rem);
   }
 
-  .history {
+  /* ---------- Intro ---------- */
+
+  .intro {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem) clamp(2rem, 6vw, 6rem);
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .intro .statement {
+    grid-column: 1 / -1;
+    max-width: 30ch;
+    margin-top: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  /* ---------- Bands ---------- */
+
+  .band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem) clamp(2rem, 6vw, 6rem);
     align-items: start;
   }
 
-  .history-text { grid-column: 1 / 6; grid-row: 1; }
-  .history-photo { overflow: hidden; aspect-ratio: 4 / 5; }
-  .history-photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .h0 { grid-column: 7 / 11; grid-row: 1; }
-  .h1 { grid-column: 9 / 13; grid-row: 1; margin-top: 45%; z-index: 1; }
-
-  .people {
+  /* The filete that opens every band: one hairline across both columns, the number in the
+     margin, the title beside it. */
+  .band-head {
+    grid-column: 1 / -1;
     display: grid;
-    gap: 2rem;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0 clamp(1rem, 2vw, 2rem);
+    padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
+    border-top: 1px solid var(--line);
   }
 
-  .people-text {
-    max-width: 40rem;
+  .n {
+    color: var(--ambar);
+    letter-spacing: 0.2em;
   }
 
-  .people-grid {
+  .band-title {
+    max-width: 14em;
+  }
+
+  .band-text {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: clamp(1rem, 2vw, 1.75rem);
+    padding-left: clamp(1rem, 2vw, 2rem);
+    border-left: 1px solid var(--line);
   }
 
-  .people-grid li {
-    display: grid;
-    gap: 0.75rem;
+  .band .statement {
+    align-self: end;
+    margin-top: clamp(1rem, 3vw, 2.5rem);
   }
 
-  .person-photo {
-    aspect-ratio: 3 / 4;
+  .photo {
+    grid-row: span 2;
     overflow: hidden;
   }
 
-  .person-photo :global(img),
-  .rudi-photo :global(img) {
+  .photo > div {
+    height: 100%;
+  }
+
+  .photo :global(img) {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .rudi,
-  .closing {
+  .wide {
+    aspect-ratio: 3 / 2;
+  }
+
+  .tall {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* Flip swaps the columns: photo left, text right. It moves the grid cells, not the
+     source order, so the page still reads title, text, photo. */
+  .flip .photo {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+  }
+
+  .flip .band-text {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .flip .statement {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .band-wide {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    aspect-ratio: 21 / 9;
+    margin-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  /* ---------- Made in El Baixo ---------- */
+
+  .made {
     display: grid;
-    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: center;
+    justify-items: center;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding-top: clamp(2rem, 5vw, 4rem);
+    border-top: 1px solid var(--line);
+    text-align: center;
   }
 
-  .rudi-photo {
-    aspect-ratio: 2 / 3;
-    overflow: hidden;
+  .made-title {
+    max-width: 16em;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 5vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.08;
+    text-transform: uppercase;
+    text-wrap: balance;
   }
 
-  .closing {
-    grid-template-columns: minmax(0, 1fr);
+  .made .body {
+    max-width: 46ch;
+  }
+
+  .made-sign {
+    color: var(--ambar);
+    letter-spacing: 0.22em;
+    text-wrap: balance;
   }
 
   @media (max-width: 760px) {
-    .lead-text {
-      margin-top: -4rem;
+    .hero-frame {
+      height: min(68svh, 32rem);
     }
 
-    .history {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      row-gap: 2rem;
+    .hero-claim {
+      margin-top: -3rem;
     }
 
-    .history-text { grid-column: 1 / -1; }
-    .h0 { grid-column: 1 / 9; grid-row: 2; }
-    .h1 { grid-column: 6 / 13; grid-row: 3; margin-top: -25%; }
-
-    .people-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .intro,
+    .band {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .rudi,
-    .closing {
-      grid-template-columns: 1fr;
+    .band-head {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+
+    .band-text {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .photo,
+    .flip .photo,
+    .flip .band-text,
+    .flip .statement {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .band-wide {
+      aspect-ratio: 3 / 2;
+    }
+
+    .deck,
+    .body,
+    .statement,
+    .intro .statement {
+      max-width: none;
     }
   }
 </style>

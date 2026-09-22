@@ -9,8 +9,9 @@ and a contact channel, not a shop. Two languages: Spanish at the root, English u
 
 State: **draft v0, five real pieces in**. Structure, navigation and transitions are built and
 reviewed. `Wired`, `Dijo Sí`, `Trinacria`, `Buda & Eva` and `La Famiglia` are real, with their own
-photos and stories, and the home hero uses their photos. The 8 invented placeholder pieces were deleted. The
-Info and El Baixo photos and the English copy are still placeholders. Every page carries
+photos and stories, and the home hero uses their photos. The 8 invented placeholder pieces were deleted. The El
+Baixo view is built from real photos, the real client copy and a header video. The Info photos and
+the English copy are still placeholders. Every page carries
 `noindex`. The site is not launched.
 
 Brand line: `Luxury jewelry with an underground spirit` / `Hecho en El Baixo`, no full stop.

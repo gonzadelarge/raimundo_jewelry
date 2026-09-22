@@ -1,6 +1,6 @@
 ---
 import Seal from "@/components/brand/Seal.astro";
-import { copy, routePath, ui, type Locale } from "@/i18n";
+import { copy, ui, type Locale } from "@/i18n";
 import { site } from "@/data/site";
 
 interface Props {
@@ -14,33 +14,30 @@ const c = copy[locale];
 
 <footer class="site-footer">
   <div class="shell footer-inner">
+    <p class="label origin">
+      <Seal class="seal" title="Raimundo" />
+      {t.footer.origin}
+    </p>
+
     <p class="slogan label">
       {
         c.fourC.map((word, index) => (
           <>
-            {index > 0 && <span class="dot" aria-hidden="true">·</span>}
+            {index > 0 && (
+              <span class="dot" aria-hidden="true">
+                ·
+              </span>
+            )}
             <span>{word}</span>
           </>
         ))
       }
     </p>
 
-    <div class="row">
-      <p class="label origin">
-        <Seal class="seal" title="Raimundo" />
-        {t.footer.origin}
-      </p>
-
-      <ul class="links">
-        <li><a class="label" href={site.instagram} target="_blank" rel="noreferrer">Instagram</a></li>
-        <li><a class="label" href={`mailto:${site.email}`}>Email</a></li>
-      </ul>
-
-      <ul class="links legal">
-        <li><a class="label muted" href={routePath("legal", locale)}>{t.footer.legal}</a></li>
-        <li><a class="label muted" href={routePath("privacy", locale)}>{t.footer.privacy}</a></li>
-      </ul>
-    </div>
+    <ul class="links">
+      <li><a class="label" href={site.instagram} target="_blank" rel="noreferrer">Instagram</a></li>
+      <li><a class="label" href={`mailto:${site.email}`}>Email</a></li>
+    </ul>
   </div>
 </footer>
 
@@ -50,35 +47,25 @@ const c = copy[locale];
     border-top: 1px solid var(--line);
   }
 
+  /* One row on desktop. The side columns are both 1fr, so the 4 C sit in the middle of the
+     page and not in the middle of the space left over. */
   .footer-inner {
     display: grid;
-    gap: 2rem;
-    padding-block: 2.5rem max(2rem, env(safe-area-inset-bottom));
-  }
-
-  .slogan {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.9rem;
-    font-size: clamp(0.9rem, 1.6vw, 1.15rem);
-  }
-
-  .dot {
-    color: var(--ambar);
-  }
-
-  .row {
-    display: flex;
-    flex-wrap: wrap;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.25rem 2rem;
+    gap: 1.25rem 1.5rem;
+    padding-block: 1.75rem max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .footer-inner > * {
+    min-width: 0;
   }
 
   .origin {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    white-space: nowrap;
   }
 
   .origin :global(.seal) {
@@ -86,9 +73,48 @@ const c = copy[locale];
     height: auto;
   }
 
+  /* One line, always. The 4 C are the widest block, so they take the size that lets the
+     three blocks share the row, and they never wrap. */
+  .slogan {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.35rem 0.7rem;
+    font-size: clamp(0.6rem, 0.95vw, 1rem);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .dot {
+    color: var(--ambar);
+  }
+
   .links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.75rem;
+    justify-content: flex-end;
+    gap: 0.75rem 1.5rem;
+    white-space: nowrap;
+  }
+
+  /* The footer is one row or one column, never something in between. Below 900px the three
+     blocks cannot share a line at a readable size, so they stack. This is the only place in
+     the site with a breakpoint other than 760px. */
+  @media (max-width: 900px) {
+    .footer-inner {
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: center;
+      gap: 1.25rem;
+      text-align: center;
+    }
+
+    .slogan {
+      flex-wrap: wrap;
+      white-space: normal;
+      font-size: clamp(0.8rem, 1.6vw, 1rem);
+    }
+
+    .links {
+      justify-content: center;
+    }
   }
 </style>

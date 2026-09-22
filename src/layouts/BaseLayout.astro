@@ -27,9 +27,13 @@ const { title, description, locale, alternateHref, current, backdrop = "marfil" 
 
 const marbles = { marfil, blanco, negro, burdeos };
 const source = backdrop === "negro-soft" ? "negro" : backdrop;
+// The marble files are 1024 x 1536, so the browser already stretches them. The black one
+// shows it far more than the light ones: its veins sit in a dark gradient, where webp
+// blocks are visible. It gets a higher quality, at about 180 kB more.
+const quality = (name: string) => (name === "negro" ? 88 : 72);
 const [marble, marbleDark] = await Promise.all([
-  getImage({ src: marbles[source], format: "webp", width: 1024, quality: 72 }),
-  getImage({ src: negro, format: "webp", width: 1024, quality: 72 }),
+  getImage({ src: marbles[source], format: "webp", width: 1024, quality: quality(source) }),
+  getImage({ src: negro, format: "webp", width: 1024, quality: quality("negro") }),
 ]);
 
 const theme = backdrop === "marfil" || backdrop === "blanco" ? "light" : "dark";

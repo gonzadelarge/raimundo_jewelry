@@ -37,6 +37,12 @@ import laFamiglia04 from "@/assets/photos/la-famiglia-04.jpg";
 import laFamiglia05 from "@/assets/photos/la-famiglia-05.jpg";
 // la-famiglia-06 is la-famiglia-02 rotated, so the whole piece survives the 4:5 gallery crop.
 import laFamiglia06 from "@/assets/photos/la-famiglia-06.jpg";
+// El Baixo photos. baixo-03 to baixo-05 are Rudi and Jesús at the bench.
+import baixo01 from "@/assets/photos/baixo-01.jpg";
+import baixo02 from "@/assets/photos/baixo-02.jpg";
+import baixo03 from "@/assets/photos/baixo-03.jpg";
+import baixo04 from "@/assets/photos/baixo-04.jpg";
+import baixo05 from "@/assets/photos/baixo-05.jpg";
 import real01 from "@/assets/photos/real-01.jpg";
 import real02 from "@/assets/photos/real-02.jpg";
 import real03 from "@/assets/photos/real-03.jpg";
@@ -58,6 +64,7 @@ export const photos = {
   trinacria01, trinacria02, trinacria03, trinacria04, trinacria05, trinacria06, trinacria07,
   budaEva01, budaEva02, budaEva03, budaEva04, budaEva05, budaEva06, budaEva07, budaEva08,
   laFamiglia01, laFamiglia02, laFamiglia03, laFamiglia04, laFamiglia05, laFamiglia06,
+  baixo01, baixo02, baixo03, baixo04, baixo05,
   real01, real02, real03, real04, real05, real06, real08,
   random07, random09, random11, random13, random14, random15, random17,
 };
@@ -80,11 +87,12 @@ export const infoPhotos = {
   steps: [photos.random07, photos.random09, photos.random11, photos.random13, photos.real01],
 };
 
+// El Baixo. The header is a video, in public/video/baixo.mp4, so it is not listed here.
 export const baixoPhotos = {
-  lead: photos.random15,
-  history: [photos.random17, photos.real02],
-  people: [photos.real08, photos.real05, photos.real03, photos.real06],
-  rudi: photos.random14,
+  project: photos.baixo01,   // Jesús at the bench, the room behind him
+  people: photos.baixo02,    // the workshop with more than one person working
+  rudi: photos.baixo05,      // Rudi and Jesús, portrait
+  rudiWide: photos.baixo03,  // the same scene, wide
 };
 
 export const contactPhoto = photos.real04;

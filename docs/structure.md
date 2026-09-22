@@ -85,8 +85,18 @@ ends with the next-piece band.
 
 ## Footer
 
-`src/components/Footer.astro`: the 4 C slogan, the seal with `Hecho en El Baixo · Valencia`,
-Instagram, email, and the two legal links.
+`src/components/Footer.astro`: one row on desktop. The seal with `Hecho en El Baixo · Valencia` on
+the left, the 4 C slogan centred, Instagram and email on the right. The grid is `1fr auto 1fr`, so
+the 4 C sit in the middle of the page and not in the middle of the space left over. The 4 C never
+wrap: `white-space: nowrap` plus `font-size: clamp(0.6rem, 0.95vw, 1rem)`, because they are the
+widest of the three blocks. The footer is one row or one column and nothing in between, so below
+900 px the three blocks stack, centred. That 900 px is the only breakpoint in the site that is not
+760 px.
+
+**The legal links are gone from the footer.** `/aviso-legal`, `/privacidad`, `/en/legal-notice`
+and `/en/privacy` still build and still carry `noindex`, but nothing links to them. The strings
+`t.footer.legal` and `t.footer.privacy` stay in `src/i18n/ui.ts` for whoever puts the links back.
+Real legal texts are a launch item; see [seo.md](seo.md).
 
 ## Gallery blocks
 
@@ -126,7 +136,7 @@ Home ──click a spread──▶ Piece ──"Volver" / browser back──▶ 
                            ├─ "Consultar esta pieza" ──▶ /contacto?pieza=slug
                            └─ "Quiero algo similar" ──▶ /contacto?pieza=slug&motivo=commission
 Header ──▶ Info, El Baixo, Contacto, other language
-Footer ──▶ Instagram, email, Aviso legal, Privacidad
+Footer ──▶ Instagram, email
 ```
 
 `Volver` logic lives in `src/scripts/menu.ts`. If the reader came from the gallery in the same
