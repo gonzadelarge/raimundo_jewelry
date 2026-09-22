@@ -35,22 +35,52 @@ export const copy = {
       fourCIntro: "Un guiño a las 4 C del diamante, reinterpretadas desde nuestra forma de trabajar.",
     },
     baixo: {
-      title: "Entra en El Baixo.",
-      intro: [
-        "El Baixo es el espacio donde Raimundo toma forma.",
-        "Es taller, lugar de trabajo y punto de encuentro. Aquí conviven joyería, diseño, tecnología, arte, conversaciones y colaboraciones que terminan influyendo en el carácter de la marca.",
-      ],
-      historyTitle: "Un proyecto en evolución.",
-      history: [
-        "La creatividad ya estaba muy presente antes de que apareciera la joyería. Jesús llegó al oficio casi como un descubrimiento y encontró en él un lugar donde podían convivir muchas de las cosas que ya le interesaban.",
-        "Poco a poco El Baixo se convirtió en el punto donde todo empezó a encontrarse: el taller, el diseño, el 3D, las conversaciones y los encargos.",
-      ],
-      peopleTitle: "La gente.",
-      people: "Jesús ocupa el centro del trabajo joyero. El proyecto se alimenta también de su entorno: sus hermanos, socios, amigos, artistas y profesionales.",
-      peopleNames: ["Jesús", "Nombre", "Nombre", "Nombre"],
-      rudiTitle: "Rudi.",
-      rudi: "Rudi ha sido una figura de referencia personal y profesional, vinculada al conocimiento del oficio y a la idea de hasta dónde puede llegar una trayectoria construida con rigor y experiencia.",
-      closing: "Hecho en El Baixo no habla solo del lugar de fabricación. Habla de todo lo que ha contribuido a dar forma a cada pieza.",
+      title: "Entra en El Baixo",
+      intro: {
+        lead: "El Baixo no es solo el lugar donde se crea Raimundo. Forma parte de Raimundo.",
+        body: [
+          "Es taller, espacio de trabajo y punto de encuentro. Aquí nacen las piezas, se desarrollan ideas, se prueban materiales y surgen colaboraciones que terminan dando forma al proyecto.",
+          "Conviven joyería, diseño, tecnología, arte y música en un entorno abierto a la experimentación y al intercambio.",
+        ],
+        closing: "Un espacio de creación, pero sobre todo, un espacio de creadores",
+      },
+      project: {
+        title: "Un proyecto en evolución",
+        lead: "Raimundo es un proyecto en constante movimiento.",
+        body: [
+          "Ha ido creciendo a partir del oficio joyero, pero también de la música, el diseño, la tecnología, las personas y las experiencias que forman parte de su entorno.",
+          "El Baixo es el lugar donde todas esas influencias se encuentran y evolucionan.",
+        ],
+        closing: "Probar, aprender, mezclar y seguir construyendo forman parte del proceso",
+      },
+      people: {
+        title: "La gente",
+        lead: "Raimundo también se construye a través de las personas que lo rodean.",
+        body: [
+          "Por El Baixo pasan amigos, familia, artistas, diseñadores, artesanos y colaboradores que aportan miradas, conocimientos e ideas diferentes.",
+          "Algunos forman parte del día a día. Otros llegan para una pieza, una colaboración o un proyecto concreto.",
+        ],
+        closing: "Cada uno deja algo. Y todo ello acaba formando parte de Raimundo",
+      },
+      rudi: {
+        title: "Rudi",
+        lead: "Rudi representa el oficio, la experiencia y la transmisión.",
+        body: [
+          "Su relación con Jesús forma parte esencial de Raimundo y de una manera de entender la joyería basada en compartir conocimiento y mantener vivo un oficio que pasa de unas manos a otras.",
+          "En El Baixo, las técnicas tradicionales conviven con impresión 3D, nuevos materiales y herramientas contemporáneas.",
+        ],
+        closing: "Tradición y evolución no se oponen. Se complementan",
+        photoAlt: "Rudi y Jesús trabajando juntos en el banco de joyero",
+      },
+      made: {
+        title: "Hecho en El Baixo",
+        lead: "Hecho en El Baixo es una manera de entender el proceso",
+        body: [
+          "Cada pieza pasa por las manos, las herramientas, las pruebas y las conversaciones que forman parte del espacio.",
+          "Puede comenzar con un dibujo, una piedra, una historia, una impresión 3D o una idea todavía por definir. A partir de ahí comienza el trabajo.",
+        ],
+        closing: "Diseñado, desarrollado y hecho en El Baixo. Valencia",
+      },
     },
     contact: {
       title: "Acércate.",
@@ -114,22 +144,52 @@ export const copy = {
       fourCIntro: "A nod to the 4 Cs of the diamond, reinterpreted from our own way of working.",
     },
     baixo: {
-      title: "Enter El Baixo.",
-      intro: [
-        "El Baixo is the space where Raimundo takes shape.",
-        "It is a workshop, a place of work and a meeting point. Jewelry, design, technology, art, conversations and collaborations live here, and they all shape the character of the brand.",
-      ],
-      historyTitle: "A project in progress.",
-      history: [
-        "Creativity was already there before jewelry arrived. Jesús came to the craft almost by discovery, and found a place where many of the things he cared about could live together.",
-        "Little by little El Baixo became the point where everything met: the workshop, design, 3D, conversations and commissions.",
-      ],
-      peopleTitle: "The people.",
-      people: "Jesús is at the centre of the jewelry work. The project also grows from the people around him: his brothers, partners, friends, artists and professionals.",
-      peopleNames: ["Jesús", "Name", "Name", "Name"],
-      rudiTitle: "Rudi.",
-      rudi: "Rudi has been a personal and professional reference, linked to deep knowledge of the craft and to the idea of how far a career built with rigour and experience can go.",
-      closing: "Made in El Baixo is not only about where the pieces are made. It is about everything that helped give them shape.",
+      title: "Enter El Baixo",
+      intro: {
+        lead: "El Baixo is not only the place where Raimundo is made. It is part of Raimundo.",
+        body: [
+          "It is a workshop, a place of work and a meeting point. Pieces are born here, ideas grow, materials get tested and collaborations appear that end up shaping the project.",
+          "Jewelry, design, technology, art and music live together in a space open to testing and exchange.",
+        ],
+        closing: "A space for making, but above all a space for makers",
+      },
+      project: {
+        title: "A project in motion",
+        lead: "Raimundo is a project that never stands still.",
+        body: [
+          "It grew out of the jewelry craft, but also out of music, design, technology, the people around it and the experiences that come with them.",
+          "El Baixo is where all those influences meet and move forward.",
+        ],
+        closing: "Testing, learning, mixing and carrying on building are part of the process",
+      },
+      people: {
+        title: "The people",
+        lead: "Raimundo is also built through the people around it.",
+        body: [
+          "Friends, family, artists, designers, craftspeople and collaborators pass through El Baixo, and each one brings a different view, skill or idea.",
+          "Some are part of the daily work. Others come for one piece, one collaboration or one project.",
+        ],
+        closing: "Every one of them leaves something. And all of it ends up inside Raimundo",
+      },
+      rudi: {
+        title: "Rudi",
+        lead: "Rudi stands for craft, experience and passing knowledge on.",
+        body: [
+          "His relationship with Jesús is central to Raimundo and to a way of understanding jewelry built on sharing knowledge and keeping alive a craft that moves from one pair of hands to the next.",
+          "At El Baixo, traditional techniques live next to 3D printing, new materials and contemporary tools.",
+        ],
+        closing: "Tradition and evolution are not opposites. They complete each other",
+        photoAlt: "Rudi and Jesús working together at the jeweller's bench",
+      },
+      made: {
+        title: "Made in El Baixo",
+        lead: "Made in El Baixo is a way of understanding the process",
+        body: [
+          "Every piece goes through the hands, the tools, the tests and the conversations that belong to this space.",
+          "It can start with a drawing, a stone, a story, a 3D print or an idea still to be defined. From there the work begins.",
+        ],
+        closing: "Designed, developed and made in El Baixo. Valencia",
+      },
     },
     contact: {
       title: "Come closer.",

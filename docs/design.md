@@ -27,6 +27,14 @@ Theme tokens change with `data-theme` on `<html>`:
 | `--accent` | carbón | ámbar |
 
 `data-veil="soft"` lowers the dark veil to 42%, so more gold veins show. Only El Baixo uses it.
+That view also gets a fourth backdrop layer: 35% black in `multiply`, which takes the marble down
+to about two thirds of its brightness. Without it the stretched black marble reads as grain, because the soft veil hides
+less of it.
+
+**Marble quality is not the same for every file.** The sources are 1024 x 1536 PNG, so the browser
+stretches them on any wide screen. `BaseLayout.astro` encodes the light ones to webp at quality 72
+and `marmol_negro` at 88 (171 kB against 356 kB). Dark gradients show webp blocks; marfil and
+blanco do not.
 
 `--shadow-photo` is the drop shadow of a photo that sits in front of another one: the gallery
 product photo and the piece cover photo. It is stronger in the dark theme.
@@ -82,7 +90,7 @@ Helper classes in `global.css`:
 - One background per view, fixed behind the page. The marble is a `position: fixed` layer
   (`.backdrop`), not `background-attachment: fixed`, which iOS Safari does not support.
 - The backdrop stacks three layers: the veil gradient, the marble image, the flat view colour as a
-  fallback.
+  fallback. El Baixo adds the multiply layer on top of those three.
 - Mobile breakpoint is **760 px**. The mobile menu closes itself above 761 px.
 - Photos are always `<Image>` from `astro:assets` with explicit `widths` and `sizes`. Never a raw
   `<img>` with a `src` from `src/assets/`. The React island is the exception: it gets plain `src`
@@ -128,6 +136,66 @@ Helper classes in `global.css`:
   composition. All five overlap the two photos by about one column. In v1, v3 and v4 the product
   photo starts **below the middle** of the worn photo. Keep it there: a portrait worn shot puts the
   face in the upper half, the product photo sits in front, and a high overlap cuts the face.
+
+## The El Baixo view
+
+The one view with no text boxes. It is the editorial layout of the site, and it is built from six
+decisions. Keep them together: dropping one makes the others look arbitrary.
+
+**Text sits on the marble.** No panel, no dark block behind a paragraph. The `negro-soft` veil plus
+the multiply layer keep the marble dark enough for marfil type, the same way the home claim sits
+straight on the collage. An earlier draft used `rgb(17 17 17 / 0.78)` blocks and read as a set of
+cards.
+
+**Three type sizes, far apart.** The distance is the design.
+
+| Step | Size | Used for |
+|---|---|---|
+| Display | `clamp(2.6rem, 9vw, 7rem)`, line-height 0.95 | The page title only |
+| Section display | `.title`, and `clamp(1.35rem, 3vw, 2.6rem)` for the closing lines | Band titles, statements, the closing block |
+| Deck | `clamp(1.15rem, 2vw, 1.7rem)`, max-width 24ch | The first line of every section |
+| Body | `0.875rem`, line-height 1.9, `--muted`, max-width 38ch | Everything else |
+
+**Filetes carry the structure.** Every band opens with a 1 px `--line` rule across both columns.
+The text column carries a vertical rule on its left, dropped below 761 px. Each closing statement
+sits over its own rule, and the final block opens with one.
+
+**Glyphs come from the brand, not from a library.** The section numbers `01`, `02`, `03` are ámbar
+`.label` type in a 4.5 rem margin column. The `.star` opens each statement and hangs in the margin
+(`text-indent: -1.3em` with the same padding), so the first line starts on the same edge as the
+rest. The sign-off is ámbar caps at `0.22em` letter-spacing. The numbers are digits, so they need
+no translation.
+
+**One band, mirrored.** The three middle sections share a grid: head across both columns, then
+text and photo side by side, then the statement under the text. `flip` moves the photo to column 1
+and the text to column 2, so `01` and `03` read text left, photo right, and `02` is the mirror.
+Flip moves grid cells, not source order, so the page still reads title, text, photo. The bands are
+an array in the frontmatter of `BaixoView.astro`; a fourth section is one more entry.
+
+**Motion follows the house rules.** Photos get their own parallax rate (`0.06`, `0.09`, `0.05`, and
+`0.04` for the wide Rudi photo), so they separate as the page scrolls. Heads, text and statements
+reveal with a 90 ms stagger. The header video drifts at `-0.05` with `data-parallax-zero` and the
+title at `0.05`, the same pair of rates the home hero uses, so the title always moves away from the
+video.
+
+**Headlines in this view carry no full stop.** The page title, the band titles, the closing
+statements and the sign-off all end without one, like `Hecho en El Baixo` in the brand. Decks and
+body text keep normal punctuation. Info and Contact still use full stops in their titles; if that
+changes, it changes in `copy.ts` for every view at once.
+
+### The header video
+
+- The file is `public/video/baixo.mp4`. Astro does not process video, so it ships as it is. It is
+  22 MB today, which is heavy for a header: compress it before launch.
+- `autoplay muted loop playsinline preload="metadata"`, and `tabindex="-1"` with the frame marked
+  `aria-hidden="true"`, because it carries no information.
+- The poster is a processed image, built with `getImage()` from `baixo-03`, so the first paint is
+  not a 800 kB JPEG.
+- The video sits in a mask at `height: 118%` with `margin-top: -9%`, so the parallax drift never
+  opens a gap at the edge of the frame.
+- Under `prefers-reduced-motion: reduce` a small script drops `autoplay` and pauses it, so the view
+  holds the poster frame. The script runs again on `astro:page-load`, because the router swaps
+  pages without a reload.
 
 ## Motion
 

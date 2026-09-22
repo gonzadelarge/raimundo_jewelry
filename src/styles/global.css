@@ -180,6 +180,19 @@ html {
   pointer-events: none;
 }
 
+/* El Baixo runs the soft veil, so more marble comes through and the stretched black
+   marble shows its grain. A 35% black layer in multiply takes the marble down to about
+   two thirds of its brightness, which settles the grain and still leaves the gold veins
+   the soft veil exists for. */
+[data-veil="soft"] .backdrop {
+  background:
+    linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.35)),
+    linear-gradient(var(--veil), var(--veil)),
+    var(--marble) center / cover no-repeat,
+    var(--bg);
+  background-blend-mode: multiply, normal, normal, normal;
+}
+
 /* ---------- Layout helpers ---------- */
 
 .shell {

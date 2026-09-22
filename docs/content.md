@@ -88,7 +88,9 @@ its own. See [seo.md](seo.md).
 ## Photos
 
 - `src/assets/` for anything the build should process. `public/` only for files that must keep
-  their exact path (favicon, the Carla Sans woff2).
+  their exact path (favicon, the Carla Sans woff2, the El Baixo video at
+  `public/video/baixo.mp4`). Astro does not process video, so the file ships as it is: 22 MB
+  today, worth compressing before launch.
 - The gallery pair: one product photo, one worn photo. For jewelry that pair explains the piece
   better than any text.
 - Alt text rules are in [seo.md](seo.md). Short version: decorative photos in a collage get
@@ -101,11 +103,10 @@ its own. See [seo.md](seo.md).
 | Piece photos | All real: Wired 7, Dijo Sí 5, Trinacria 7, Buda & Eva 8, La Famiglia 6 | Nothing, until new pieces arrive |
 | Pieces | 5 real pieces in the gallery. The 8 invented placeholders were deleted | Rest of the catalogue from the team |
 | Opening (home hero) | Real piece photos, 9 overlapping tiles, 1 or 2 per piece | Nothing |
-| Info and El Baixo photos | Mixed moodboard and picsum placeholders | Workshop, process and people photos |
-| People names in El Baixo | "Nombre" | Real first names |
+| Info photos | Mixed moodboard and picsum placeholders | Workshop and process photos |
+| El Baixo photos and video | All real: 5 workshop photos and the header video | Nothing |
 | English copy | Draft translation | Review by a person |
 | Legal pages | One sentence | Real legal texts |
-| El Baixo closing paragraph | Missing in the source copy | Client to write it |
 
 `images/` is an untracked drop folder for new piece material. Nothing in the build reads it.
 Copying the photos into `src/assets/photos/` and writing the entry in `src/data/pieces.ts` is the
