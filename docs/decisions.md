@@ -48,7 +48,8 @@ of changing it.
 |---|---|
 | **TypeScript 6.x** | `astro check` does not work with TypeScript 7 yet |
 | **`allowBuilds: esbuild: false` in `pnpm-workspace.yaml`** | Without it the install stops |
-| **`noindex` on every page** | Draft content. Removing it is part of launch. See [seo.md](seo.md) |
+| **`noindex` removed, 2026-09-23** | It kept Google showing the joke page from the first commits. Removed with the full launch set. See [seo.md](seo.md) |
+| **`trailingSlash: "always"`** | Cloudflare Pages redirects `/info` to `/info/` with a 307. Canonical, hreflang and the sitemap now all use the slash form. See [seo.md](seo.md) |
 | **Astro `<Image>` with originals in `src/assets/`** | WebP in several sizes generated at build time, at the cost of one import line per photo |
 | **Route helpers, never hardcoded paths** | The language switch and `hreflang` depend on them |
 
