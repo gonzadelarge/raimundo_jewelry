@@ -93,8 +93,9 @@ widest of the three blocks. The footer is one row or one column and nothing in b
 900 px the three blocks stack, centred. That 900 px is the only breakpoint in the site that is not
 760 px.
 
-**The legal links are gone from the footer.** `/aviso-legal`, `/privacidad`, `/en/legal-notice`
-and `/en/privacy` still build and still carry `noindex`, but nothing links to them. The strings
+**The legal links are gone from the footer.** `/aviso-legal/`, `/privacidad/`,
+`/en/legal-notice/` and `/en/privacy/` still build, but nothing links to them and the sitemap
+filters them out, so Google will not find them. The strings
 `t.footer.legal` and `t.footer.privacy` stay in `src/i18n/ui.ts` for whoever puts the links back.
 Real legal texts are a launch item; see [seo.md](seo.md).
 

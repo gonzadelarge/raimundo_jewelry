@@ -4,12 +4,31 @@ import Opening from "@/components/gallery/Opening.astro";
 import PieceSpread from "@/components/gallery/PieceSpread.astro";
 import { copy, otherLocale, routePath, type Locale } from "@/i18n";
 import { pieces } from "@/data/pieces";
+import { site } from "@/data/site";
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+
+// Organization data for the knowledge panel. sameAs lists the profiles Google can
+// use to confirm this is the same brand.
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: new URL(routePath("home", locale), Astro.site).href,
+  description: copy[locale].meta.home,
+  email: site.email,
+  slogan: copy[locale].slogan,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Valencia",
+    addressCountry: "ES",
+  },
+  sameAs: [site.instagram],
+};
 ---
 
 <BaseLayout
@@ -19,6 +38,7 @@ const { locale } = Astro.props;
   alternateHref={routePath("home", otherLocale(locale))}
   current="home"
   backdrop="marfil"
+  schema={schema}
 >
   <Opening locale={locale} />
 

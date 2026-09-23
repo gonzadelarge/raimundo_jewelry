@@ -11,8 +11,9 @@ State: **draft v0, five real pieces in**. Structure, navigation and transitions 
 reviewed. `Wired`, `Dijo Sí`, `Trinacria`, `Buda & Eva` and `La Famiglia` are real, with their own
 photos and stories, and the home hero uses their photos. The 8 invented placeholder pieces were deleted. The El
 Baixo view is built from real photos, the real client copy and a header video. The Info photos and
-the English copy are still placeholders. Every page carries
-`noindex`. The site is not launched.
+the English copy are still placeholders. **The site is indexable.** `noindex` was removed on
+2026-09-23, together with the full SEO launch set: canonical, hreflang, Open Graph, sitemap,
+`robots.txt` and structured data. See [docs/seo.md](docs/seo.md).
 
 Brand line: `Luxury jewelry with an underground spirit` / `Hecho en El Baixo`, no full stop.
 
@@ -71,8 +72,10 @@ historical. `docs/decisions.md` summarises what matters from them.
 
 ## Rules that break things silently
 
-1. **Never remove `noindex`** from `BaseLayout.astro` unless the task is "launch". See
-   [docs/seo.md](docs/seo.md).
+1. **Every URL ends with `/`.** `astro.config.mjs` sets `trailingSlash: "always"`, and
+   `routePath()` and `piecePath()` return paths with the slash. Canonical, hreflang and the
+   sitemap all read from them. Drop a slash and the URL becomes a 307 redirect that splits
+   ranking. See [docs/seo.md](docs/seo.md).
 2. **The gallery product photo** (`photo-a` in `PieceSpread.astro`) must not get `data-reveal` or
    `data-parallax`, and must keep the 4:5 ratio in the gallery, the piece header and the
    next-piece block. Break either and the shared-photo transition lands on a hidden or stretched

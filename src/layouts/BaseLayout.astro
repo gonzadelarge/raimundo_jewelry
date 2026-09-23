@@ -3,6 +3,7 @@ import "@fontsource-variable/montserrat";
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { htmlLang, otherLocale, ui, type Locale, type RouteKey } from "@/i18n";
@@ -10,6 +11,7 @@ import marfil from "@/assets/backgrounds/marmol_marfil.png";
 import blanco from "@/assets/backgrounds/marmol_blanco.png";
 import negro from "@/assets/backgrounds/marmol_negro.png";
 import burdeos from "@/assets/backgrounds/marmol_burdeos.png";
+import ogFallback from "@/assets/photos/wired-04.jpg";
 
 // negro is reserved for El Baixo. Piece pages use blanco.
 export type Backdrop = "marfil" | "blanco" | "negro" | "negro-soft" | "burdeos";
@@ -21,9 +23,22 @@ interface Props {
   alternateHref: string;
   current?: RouteKey | "piece";
   backdrop?: Backdrop;
+  /** Social card image. A view that has a better photo passes its own. */
+  ogImage?: ImageMetadata;
+  /** JSON-LD for this page, rendered as one application/ld+json block. */
+  schema?: Record<string, unknown>;
 }
 
-const { title, description, locale, alternateHref, current, backdrop = "marfil" } = Astro.props;
+const {
+  title,
+  description,
+  locale,
+  alternateHref,
+  current,
+  backdrop = "marfil",
+  ogImage,
+  schema,
+} = Astro.props;
 
 const marbles = { marfil, blanco, negro, burdeos };
 const source = backdrop === "negro-soft" ? "negro" : backdrop;
@@ -35,6 +50,32 @@ const [marble, marbleDark] = await Promise.all([
   getImage({ src: marbles[source], format: "webp", width: 1024, quality: quality(source) }),
   getImage({ src: negro, format: "webp", width: 1024, quality: quality("negro") }),
 ]);
+
+// A piece passes its whole story as the description. Google cuts a snippet near 160
+// characters, so cut it here at the last full sentence or word that fits.
+const clamp = (text: string, max = 160) => {
+  if (text.length <= max) return text;
+  const head = text.slice(0, max);
+  const sentence = Math.max(head.lastIndexOf(". "), head.lastIndexOf("! "), head.lastIndexOf("? "));
+  if (sentence > 80) return head.slice(0, sentence + 1);
+  return `${head.slice(0, head.lastIndexOf(" ")).replace(/[,;:]$/, "")}…`;
+};
+const metaDescription = clamp(description);
+
+// Astro.site comes from astro.config.mjs. Canonical, hreflang and og:url all have to be
+// absolute, and they keep the trailing slash the route helpers produce.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const alternate = new URL(alternateHref, Astro.site).href;
+// x-default points at the Spanish version, which is the site's main language.
+const spanish = new URL(locale === "es" ? Astro.url.pathname : alternateHref, Astro.site).href;
+const og = await getImage({
+  src: ogImage ?? ogFallback,
+  width: 1200,
+  height: 630,
+  format: "jpg",
+  quality: 80,
+});
+const ogUrl = new URL(og.src, Astro.site).href;
 
 const theme = backdrop === "marfil" || backdrop === "blanco" ? "light" : "dark";
 const veil = backdrop === "negro-soft" ? "soft" : undefined;
@@ -54,10 +95,29 @@ const t = ui[locale];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{pageTitle}</title>
-    <meta name="description" content={description} />
-    <meta name="robots" content="noindex" />
+    <meta name="description" content={metaDescription} />
     <meta name="theme-color" content={theme === "light" ? "#F3EFE7" : "#111111"} />
-    <link rel="alternate" hreflang={other} href={alternateHref} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={htmlLang[locale]} href={canonical} />
+    <link rel="alternate" hreflang={htmlLang[other]} href={alternate} />
+    <link rel="alternate" hreflang="x-default" href={spanish} />
+
+    <meta property="og:type" content={current === "piece" ? "article" : "website"} />
+    <meta property="og:site_name" content="Raimundo" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={locale === "es" ? "es_ES" : "en_GB"} />
+    <meta property="og:locale:alternate" content={other === "es" ? "es_ES" : "en_GB"} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="/fonts/carla-sans/carla-sans.woff2" as="font" type="font/woff2" crossorigin />
     <ClientRouter />
