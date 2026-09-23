@@ -93,6 +93,11 @@ widest of the three blocks. The footer is one row or one column and nothing in b
 900 px the three blocks stack, centred. That 900 px is the only breakpoint in the site that is not
 760 px.
 
+**On Info the middle block is a contact link, not the 4 C.** That page prints the four words and
+their four lines in full, so the footer would repeat them. `BaseLayout.astro` passes `current` to
+the footer, and `current === "info"` swaps the slogan for `t.nav.contact`, linked to
+`routePath("contact", locale)`. Every other page keeps the slogan.
+
 **The legal links are gone from the footer.** `/aviso-legal/`, `/privacidad/`,
 `/en/legal-notice/` and `/en/privacy/` still build, but nothing links to them and the sitemap
 filters them out, so Google will not find them. The strings
@@ -144,8 +149,13 @@ Footer ──▶ Instagram, email
 language, it calls `history.back()` so the router restores the scroll position and the photo
 returns to its place. If the piece was opened directly, the link goes to `/#slug`.
 
-`ContactView.astro` reads `?pieza=` and `?motivo=` on the client, shows the piece name and adds it
-to every email subject. The matching reason block gets an ámbar highlight.
+`ContactView.astro` has four text sections and no photos: the `Acércate` opening, the three
+reasons to write, `Encargos`, and the five steps of `El proceso`. **There is no form.** Every
+action is a `mailto:` link that opens the mail app with the subject already written, so answers
+land in the same inbox as the footer link.
+
+It reads `?pieza=` and `?motivo=` on the client, shows the piece name and adds it to every email
+subject. The matching reason block gets an ámbar highlight.
 
 Motion and transition details: [design.md](design.md). Why the structure is 5 views and not the 7
 sections of the client brief: [decisions.md](decisions.md).

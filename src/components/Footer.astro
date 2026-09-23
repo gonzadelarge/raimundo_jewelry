@@ -1,15 +1,20 @@
 ---
 import Seal from "@/components/brand/Seal.astro";
-import { copy, ui, type Locale } from "@/i18n";
+import { copy, routePath, ui, type Locale, type RouteKey } from "@/i18n";
 import { site } from "@/data/site";
 
 interface Props {
   locale: Locale;
+  current?: RouteKey | "piece";
 }
 
-const { locale } = Astro.props;
+const { locale, current } = Astro.props;
 const t = ui[locale];
 const c = copy[locale];
+
+// Info prints the 4 C in full, so the footer would say them twice on that page.
+// There it carries a contact link instead.
+const showFourC = current !== "info";
 ---
 
 <footer class="site-footer">
@@ -19,20 +24,29 @@ const c = copy[locale];
       {t.footer.origin}
     </p>
 
-    <p class="slogan label">
-      {
-        c.fourC.map((word, index) => (
-          <>
-            {index > 0 && (
-              <span class="dot" aria-hidden="true">
-                ·
-              </span>
-            )}
-            <span>{word}</span>
-          </>
-        ))
-      }
-    </p>
+    {
+      showFourC ? (
+        <p class="slogan label">
+          {c.fourC.map((word, index) => (
+            <>
+              {index > 0 && (
+                <span class="dot" aria-hidden="true">
+                  ·
+                </span>
+              )}
+              <span>{word}</span>
+            </>
+          ))}
+        </p>
+      ) : (
+        <a class="label arrow-link middle-link" href={routePath("contact", locale)}>
+          {t.nav.contact}
+          <span class="arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      )
+    }
 
     <ul class="links">
       <li><a class="label" href={site.instagram} target="_blank" rel="noreferrer">Instagram</a></li>
@@ -87,6 +101,12 @@ const c = copy[locale];
 
   .dot {
     color: var(--ambar);
+  }
+
+  /* The link takes the place of the 4 C, so it sits in the middle column. */
+  .middle-link {
+    justify-self: center;
+    white-space: nowrap;
   }
 
   .links {

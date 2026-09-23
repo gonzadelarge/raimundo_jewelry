@@ -10,8 +10,10 @@ and a contact channel, not a shop. Two languages: Spanish at the root, English u
 State: **draft v0, five real pieces in**. Structure, navigation and transitions are built and
 reviewed. `Wired`, `Dijo Sí`, `Trinacria`, `Buda & Eva` and `La Famiglia` are real, with their own
 photos and stories, and the home hero uses their photos. The 8 invented placeholder pieces were deleted. The El
-Baixo view is built from real photos, the real client copy and a header video. The Info photos and
-the English copy are still placeholders. **The site is indexable.** `noindex` was removed on
+Baixo view is built from real photos, the real client copy and a header video. The Info view holds
+only real client material: the team text, the 4 C and the portrait of Jesús. The invented
+presentation and process blocks and their placeholder photos were deleted. The English copy is
+still a draft translation. **The site is indexable.** `noindex` was removed on
 2026-09-23, together with the full SEO launch set: canonical, hreflang, Open Graph, sitemap,
 `robots.txt` and structured data. See [docs/seo.md](docs/seo.md).
 

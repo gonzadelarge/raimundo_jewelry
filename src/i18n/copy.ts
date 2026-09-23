@@ -7,32 +7,36 @@ export const copy = {
     fourC: ["Carácter", "Curiosidad", "Cuidado", "Cercanía"],
     meta: {
       home: "Joyería contemporánea creada en Valencia. Colecciones limitadas, piezas únicas y encargos hechos en El Baixo.",
-      info: "Oficio, diseño 3D y taller. Cómo trabaja Raimundo.",
+      info: "Jesús, el equipo y las 4 C de Raimundo: carácter, curiosidad, cuidado y cercanía.",
       baixo: "El Baixo es el espacio donde Raimundo toma forma.",
-      contact: "Consulta una pieza, plantea un encargo o propón un proyecto.",
+      contact: "Pregunta por una pieza, propón un encargo o cuéntanos una idea. Muchas piezas empiezan con una conversación.",
     },
     home: {
       intro:
         "Joyería contemporánea creada en Valencia, donde oficio, diseño y nuevas herramientas conviven para dar forma a piezas con identidad propia.",
     },
     info: {
-      title: "Una forma propia de entender la joyería.",
+      title: "Quién soy",
+      lead: "Al frente del proyecto está Jesús, fundador y joyero formado en la EASD València.",
+      photoAlt: "Jesús, fundador de Raimundo, en el taller",
       body: [
-        "En Raimundo trabajamos desde el oficio, pero sin limitar el proceso a una única manera de hacer.",
-        "Combinamos técnicas tradicionales de taller con diseño 3D y herramientas contemporáneas.",
-        "Cada proyecto nos lleva por un camino distinto, y ahí es donde más nos gusta estar: probando, aprendiendo y buscando la mejor forma de convertir una idea en algo que merezca la pena llevar.",
+        "Trabaja desde una base técnica y artesanal que convive con una mirada contemporánea y experimental.",
+        "A partir de ahí, Raimundo se expande hacia otras disciplinas: diseño, ilustración, música, tecnología, arte urbano y procesos creativos que amplían el lenguaje de cada pieza.",
+        "Ese carácter multidisciplinar también define al equipo. Diseñadores, ilustradores, artistas y colaboradores aportan nuevas miradas y hacen que cada proyecto pueda crecer en direcciones distintas.",
+        "Todo converge en El Baixo, taller, espacio de creación y punto de encuentro. El lugar donde las ideas se comparten, se transforman y terminan convirtiéndose en piezas, imágenes, objetos o colaboraciones.",
       ],
-      processTitle: "Del diseño al taller.",
-      processIntro:
-        "Una pieza puede comenzar en un boceto, en un modelo 3D, en una referencia visual o en una conversación. El diseño digital nos permite explorar con precisión. El taller aporta materia, oficio y acabado.",
-      steps: [
-        { title: "Idea", text: "Concepto y referencias." },
-        { title: "Diseño", text: "Forma, proporción y desarrollo técnico." },
-        { title: "Prototipo", text: "Pruebas, ajustes y validación." },
-        { title: "Taller", text: "Fabricación y trabajo sobre el material." },
-        { title: "Acabado", text: "Detalle, control y resultado final." },
+      closing: "La joyería es el punto de partida. La mezcla forma parte de Raimundo",
+      fourCTitle: "Las 4 C de Raimundo",
+      fourCIntro:
+        "En joyería, las 4 C definen las cualidades de un diamante. En Raimundo las reinterpretamos para definir nuestra forma de trabajar.",
+      // One line per word of c.fourC, in the same order.
+      fourCPoints: [
+        "Piezas con identidad propia, presencia y una intención clara.",
+        "Explorar materiales, procesos y disciplinas para seguir ampliando el lenguaje de la joyería.",
+        "En el diseño, en el oficio y en cada detalle que forma parte del proceso.",
+        "Con las personas, sus historias y quienes forman parte de cada proyecto.",
       ],
-      fourCIntro: "Un guiño a las 4 C del diamante, reinterpretadas desde nuestra forma de trabajar.",
+      fourCClosing: "Cuatro C que resumen nuestra manera de entender y hacer Raimundo",
     },
     baixo: {
       title: "Entra en El Baixo",
@@ -83,22 +87,52 @@ export const copy = {
       },
     },
     contact: {
-      title: "Acércate.",
-      intro:
-        "Si quieres consultar una pieza, plantear un encargo o hablar de un proyecto, puedes escribirnos directamente.",
-      aboutPiece: "Consulta sobre",
-      commissionTitle: "Piezas que empiezan con una idea.",
-      commission:
-        "Trabajamos piezas por encargo, desarrolladas a partir de una necesidad, una referencia o una historia personal. Y el proceso no termina con la entrega: ofrecemos acompañamiento para ajustes y mantenimiento.",
-      steps: ["Idea", "Conversación", "Diseño y pruebas", "Taller", "Entrega y postventa"],
-      reasons: [
-        { key: "piece", title: "Piezas", text: "Disponibilidad, materiales o información sobre una pieza.", subject: "Consulta de pieza" },
-        { key: "commission", title: "Encargos", text: "Desarrollo de una pieza personalizada.", subject: "Encargo" },
-        { key: "other", title: "Otros proyectos", text: "Prensa, ferias, exposiciones, colaboraciones y propuestas profesionales.", subject: "Proyecto" },
+      title: "Acércate",
+      intro: [
+        "Si quieres preguntar por una pieza, proponernos un encargo o contarnos una idea, escríbenos.",
+        "Nos gusta empezar hablando. Entender qué buscas, qué hay detrás y ver hasta dónde puede llegar.",
       ],
+      introClosing: "Muchas piezas empiezan con una conversación",
+      reasonsTitle: "¿De qué quieres hablar?",
+      reasons: [
+        {
+          key: "piece",
+          title: "Piezas",
+          text: "Disponibilidad, materiales, medidas o cualquier duda sobre una pieza de Raimundo.",
+          subject: "Consulta de pieza",
+        },
+        {
+          key: "commission",
+          title: "Encargos",
+          text: "Piezas hechas a partir de una historia, una referencia, una piedra, una idea o algo que todavía no existe.",
+          subject: "Encargo",
+        },
+        {
+          key: "other",
+          title: "Colaboraciones y proyectos",
+          text: "Artistas, diseñadores, marcas, prensa, exposiciones, ferias o propuestas que encajen con nuestra manera de hacer.",
+          subject: "Proyecto",
+        },
+      ],
+      commissionTitle: "Encargos",
+      commissionLead: "No trabajamos desde una fórmula cerrada.",
+      commissionBody: [
+        "Cada encargo empieza con algo distinto: una historia, una imagen, una pieza antigua, una piedra, una canción o una idea todavía difícil de explicar.",
+        "A partir de ahí hablamos, probamos y damos forma al proyecto hasta encontrar una pieza que tenga sentido para quien la va a llevar.",
+        "El proceso pasa por el diseño, las pruebas y el taller, pero siempre parte de la misma idea: hacer algo propio.",
+      ],
+      processTitle: "El proceso",
+      steps: [
+        { title: "Idea", text: "Cuéntanos qué tienes en mente." },
+        { title: "Conversación", text: "Ponemos contexto, referencias y posibilidades sobre la mesa." },
+        { title: "Diseño y pruebas", text: "La idea empieza a tomar forma." },
+        { title: "Taller", text: "La pieza se construye en El Baixo." },
+        { title: "Entrega y postventa", text: "Sale del taller, pero seguimos cerca." },
+      ],
+      closing: "¿Tienes una idea? Cuéntanosla",
+      aboutPiece: "Consulta sobre",
       write: "Escribir",
       channels: "Canales",
-      formNote: "Borrador: el formulario está pendiente de decidir. Por ahora, enlaces directos.",
     },
     legal: {
       legalTitle: "Aviso legal",
@@ -116,32 +150,36 @@ export const copy = {
     fourC: ["Character", "Curiosity", "Care", "Closeness"],
     meta: {
       home: "Contemporary jewelry made in Valencia. Limited collections, one-of-a-kind pieces and commissions made in El Baixo.",
-      info: "Craft, 3D design and workshop. How Raimundo works.",
+      info: "Jesús, the team and the 4 Cs of Raimundo: character, curiosity, care and closeness.",
       baixo: "El Baixo is the space where Raimundo takes shape.",
-      contact: "Ask about a piece, plan a commission or propose a project.",
+      contact: "Ask about a piece, propose a commission or tell us an idea. Many pieces start with a conversation.",
     },
     home: {
       intro:
         "Contemporary jewelry made in Valencia, where craft, design and new tools work together to shape pieces with their own identity.",
     },
     info: {
-      title: "Our own way of understanding jewelry.",
+      title: "About me",
+      lead: "Jesús leads the project. He is the founder and a jeweler trained at EASD València.",
+      photoAlt: "Jesús, founder of Raimundo, in the workshop",
       body: [
-        "At Raimundo we work from craft, without limiting the process to a single way of making.",
-        "We combine traditional workshop techniques with 3D design and contemporary tools.",
-        "Every project takes us down a different path, and that is where we like to be: testing, learning and looking for the best way to turn an idea into something worth wearing.",
+        "He works from a technical, hands-on base that lives next to a contemporary and experimental view.",
+        "From there, Raimundo reaches into other disciplines: design, illustration, music, technology, street art and creative processes that widen the language of each piece.",
+        "That mix also defines the team. Designers, illustrators, artists and collaborators bring new views, so each project can grow in a different direction.",
+        "Everything comes together in El Baixo: workshop, creative space and meeting point. The place where ideas are shared, change shape and end up as pieces, images, objects or collaborations.",
       ],
-      processTitle: "From design to workshop.",
-      processIntro:
-        "A piece can start as a sketch, a 3D model, a visual reference or a conversation. Digital design lets us explore with precision. The workshop brings material, craft and finish.",
-      steps: [
-        { title: "Idea", text: "Concept and references." },
-        { title: "Design", text: "Form, proportion and technical development." },
-        { title: "Prototype", text: "Tests, adjustments and validation." },
-        { title: "Workshop", text: "Making and working the material." },
-        { title: "Finish", text: "Detail, control and final result." },
+      closing: "Jewelry is the starting point. The mix is part of Raimundo",
+      fourCTitle: "The 4 Cs of Raimundo",
+      fourCIntro:
+        "In jewelry, the 4 Cs define the qualities of a diamond. At Raimundo we reinterpret them to define the way we work.",
+      // One line per word of c.fourC, in the same order.
+      fourCPoints: [
+        "Pieces with their own identity, presence and a clear intention.",
+        "Exploring materials, processes and disciplines to keep widening the language of jewelry.",
+        "In the design, in the craft and in every detail of the process.",
+        "With people, their stories and everyone who is part of each project.",
       ],
-      fourCIntro: "A nod to the 4 Cs of the diamond, reinterpreted from our own way of working.",
+      fourCClosing: "Four Cs that sum up how we understand and make Raimundo",
     },
     baixo: {
       title: "Enter El Baixo",
@@ -192,21 +230,52 @@ export const copy = {
       },
     },
     contact: {
-      title: "Come closer.",
-      intro: "If you want to ask about a piece, plan a commission or talk about a project, write to us directly.",
-      aboutPiece: "About",
-      commissionTitle: "Pieces that start with an idea.",
-      commission:
-        "We make pieces to order, starting from a need, a reference or a personal story. The process does not end at delivery: we stay with you for adjustments and care.",
-      steps: ["Idea", "Conversation", "Design and tests", "Workshop", "Delivery and aftercare"],
-      reasons: [
-        { key: "piece", title: "Pieces", text: "Availability, materials or information about a piece.", subject: "Piece enquiry" },
-        { key: "commission", title: "Commissions", text: "Development of a custom piece.", subject: "Commission" },
-        { key: "other", title: "Other projects", text: "Press, fairs, exhibitions, collaborations and professional proposals.", subject: "Project" },
+      title: "Come closer",
+      intro: [
+        "If you want to ask about a piece, propose a commission or tell us an idea, write to us.",
+        "We like to start by talking. Understanding what you are looking for, what stands behind it, and how far it can go.",
       ],
+      introClosing: "Many pieces start with a conversation",
+      reasonsTitle: "What do you want to talk about?",
+      reasons: [
+        {
+          key: "piece",
+          title: "Pieces",
+          text: "Availability, materials, sizes or any question about a Raimundo piece.",
+          subject: "Piece enquiry",
+        },
+        {
+          key: "commission",
+          title: "Commissions",
+          text: "Pieces made from a story, a reference, a stone, an idea or something that does not exist yet.",
+          subject: "Commission",
+        },
+        {
+          key: "other",
+          title: "Collaborations and projects",
+          text: "Artists, designers, brands, press, exhibitions, fairs or proposals that fit the way we work.",
+          subject: "Project",
+        },
+      ],
+      commissionTitle: "Commissions",
+      commissionLead: "We do not work from a closed formula.",
+      commissionBody: [
+        "Every commission starts with something different: a story, an image, an old piece, a stone, a song or an idea that is still hard to explain.",
+        "From there we talk, we test and we shape the project until we find a piece that makes sense for the person who will wear it.",
+        "The process goes through design, tests and the workshop, but it always starts from the same idea: making something of your own.",
+      ],
+      processTitle: "The process",
+      steps: [
+        { title: "Idea", text: "Tell us what you have in mind." },
+        { title: "Conversation", text: "We put context, references and options on the table." },
+        { title: "Design and tests", text: "The idea starts to take shape." },
+        { title: "Workshop", text: "The piece is built in El Baixo." },
+        { title: "Delivery and aftercare", text: "It leaves the workshop, but we stay close." },
+      ],
+      closing: "Do you have an idea? Tell us about it",
+      aboutPiece: "About",
       write: "Write",
       channels: "Channels",
-      formNote: "Draft: the form is still to be decided. Direct links for now.",
     },
     legal: {
       legalTitle: "Legal notice",
