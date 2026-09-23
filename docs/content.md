@@ -103,7 +103,8 @@ its own. See [seo.md](seo.md).
 | Piece photos | All real: Wired 7, Dijo Sí 5, Trinacria 7, Buda & Eva 8, La Famiglia 6 | Nothing, until new pieces arrive |
 | Pieces | 5 real pieces in the gallery. The 8 invented placeholders were deleted | Rest of the catalogue from the team |
 | Opening (home hero) | Real piece photos, 9 overlapping tiles, 1 or 2 per piece | Nothing |
-| Info photos | Mixed moodboard and picsum placeholders | Workshop and process photos |
+| Info photos | One real photo, `info-01`, the portrait of Jesús at the tool wall. The moodboard and picsum placeholders were deleted with the draft sections | More workshop and process photos, if the page grows |
+| Contact photo | Deleted. The page is text only, because the client folder for it holds no photos | A workshop or bench photo, if the page needs one |
 | El Baixo photos and video | All real: 5 workshop photos and the header video | Nothing |
 | English copy | Draft translation | Review by a person |
 | Legal pages | One sentence | Real legal texts |

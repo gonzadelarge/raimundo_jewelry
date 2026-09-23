@@ -43,17 +43,14 @@ import baixo02 from "@/assets/photos/baixo-02.jpg";
 import baixo03 from "@/assets/photos/baixo-03.jpg";
 import baixo04 from "@/assets/photos/baixo-04.jpg";
 import baixo05 from "@/assets/photos/baixo-05.jpg";
+// Info. info-01 is the portrait of Jesús in front of the tool wall of the workshop.
+import info01 from "@/assets/photos/info-01.jpg";
 import real01 from "@/assets/photos/real-01.jpg";
 import real02 from "@/assets/photos/real-02.jpg";
 import real03 from "@/assets/photos/real-03.jpg";
 import real04 from "@/assets/photos/real-04.jpg";
 import real05 from "@/assets/photos/real-05.jpg";
 import real06 from "@/assets/photos/real-06.jpg";
-import real08 from "@/assets/photos/real-08.jpg";
-import random07 from "@/assets/photos/random-07.jpg";
-import random09 from "@/assets/photos/random-09.jpg";
-import random11 from "@/assets/photos/random-11.jpg";
-import random13 from "@/assets/photos/random-13.jpg";
 import random14 from "@/assets/photos/random-14.jpg";
 import random15 from "@/assets/photos/random-15.jpg";
 import random17 from "@/assets/photos/random-17.jpg";
@@ -65,8 +62,9 @@ export const photos = {
   budaEva01, budaEva02, budaEva03, budaEva04, budaEva05, budaEva06, budaEva07, budaEva08,
   laFamiglia01, laFamiglia02, laFamiglia03, laFamiglia04, laFamiglia05, laFamiglia06,
   baixo01, baixo02, baixo03, baixo04, baixo05,
-  real01, real02, real03, real04, real05, real06, real08,
-  random07, random09, random11, random13, random14, random15, random17,
+  info01,
+  real01, real02, real03, real04, real05, real06,
+  random14, random15, random17,
 };
 
 // Home hero collage. One photo per tile, in tile order. Opening.astro sets each tile's ratio,
@@ -82,9 +80,9 @@ export const openingPhotos = [
   photos.budaEva07,     // 5  medium, 4/3
 ];
 
+// Info. The page shows one photo: the portrait of Jesús at the tool wall of the workshop.
 export const infoPhotos = {
-  lead: photos.real08,
-  steps: [photos.random07, photos.random09, photos.random11, photos.random13, photos.real01],
+  team: photos.info01,
 };
 
 // El Baixo. The header is a video, in public/video/baixo.mp4, so it is not listed here.
@@ -95,4 +93,3 @@ export const baixoPhotos = {
   rudiWide: photos.baixo03,  // the same scene, wide
 };
 
-export const contactPhoto = photos.real04;

@@ -32,6 +32,8 @@ export const ui = {
       prev: "Anterior",
       next: "Siguiente",
     },
+    // First line of the WhatsApp chat, so the reader does not start on an empty box.
+    whatsappHello: "Hola Raimundo, escribo desde la web.",
     footer: {
       origin: "Hecho en El Baixo · Valencia",
       legal: "Aviso legal",
@@ -71,6 +73,7 @@ export const ui = {
       prev: "Previous",
       next: "Next",
     },
+    whatsappHello: "Hi Raimundo, I am writing from the website.",
     footer: {
       origin: "Made in El Baixo · Valencia",
       legal: "Legal notice",

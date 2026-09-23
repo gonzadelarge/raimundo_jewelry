@@ -20,122 +20,197 @@ const c = copy[locale];
   current="info"
   backdrop="marfil"
 >
-  <section class="about shell">
-    <div class="about-photo" data-reveal>
-      <Image src={infoPhotos.lead} alt="" widths={[480, 800]} sizes="(max-width: 760px) 100vw, 40vw" loading="eager" />
+  <section class="shell about" aria-labelledby="info-title">
+    <div class="about-head" data-reveal>
+      <p class="label mark"><span class="star" aria-hidden="true"></span> {c.origin}</p>
+      <h1 id="info-title" class="title about-title">{c.info.title}</h1>
     </div>
-    <div class="about-text">
-      <p class="label muted">Raimundo</p>
-      <h1 class="title">{c.info.title}</h1>
-      <div class="prose lead">
+
+    <div class="about-text" data-reveal style="transition-delay:90ms">
+      <p class="deck">{c.info.lead}</p>
+      <div class="body">
         {c.info.body.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </div>
-  </section>
 
-  <section class="process" aria-labelledby="process-title">
-    <div class="shell process-head" data-reveal>
-      <p class="label muted">{locale === "es" ? "Proceso" : "Process"}</p>
-      <h2 id="process-title" class="title">{c.info.processTitle}</h2>
-      <p class="lead">{c.info.processIntro}</p>
+    {/* The frame stays in the grid and the photo drifts inside it. The inner box is
+        taller than the frame, so the drift never opens a gap at the top or the bottom. */}
+    <div class="photo">
+      <div class="photo-move" data-parallax="0.08">
+        <div class="photo-in" data-reveal>
+          <Image
+            src={infoPhotos.team}
+            alt={c.info.photoAlt}
+            widths={[500, 800, 1200]}
+            sizes="(max-width: 760px) 100vw, 44vw"
+          />
+        </div>
+      </div>
     </div>
 
-    <ol class="steps">
-      {
-        c.info.steps.map((step, index) => (
-          <li class="step" data-reveal style={`transition-delay:${index * 80}ms`}>
-            <div class="step-photo">
-              <Image src={infoPhotos.steps[index]!} alt="" widths={[320, 520]} sizes="(max-width: 760px) 70vw, 18vw" />
-            </div>
-            <p class="label step-number muted">0{index + 1}</p>
-            <h3 class="title-sm">{step.title}</h3>
-            <p>{step.text}</p>
-          </li>
-        ))
-      }
-    </ol>
+    <p class="statement" data-reveal>
+      <span class="star" aria-hidden="true"></span>{c.info.closing}
+    </p>
   </section>
 
-  <section class="four-c shell" aria-label="4 C" data-reveal>
-    <p class="slogan">
+  <section class="four-c" aria-labelledby="fourc-title">
+    <div class="shell fourc-head" data-reveal>
+      <p class="label muted">{c.info.fourCTitle}</p>
+      <h2 id="fourc-title" class="slogan">
+        {
+          c.fourC.map((word, index) => (
+            <>
+              {index > 0 && (
+                <span class="dot" aria-hidden="true">
+                  ·
+                </span>
+              )}
+              <span>{word}</span>
+            </>
+          ))
+        }
+      </h2>
+      <p class="lead muted fourc-intro">{c.info.fourCIntro}</p>
+    </div>
+
+    {/* Four lines, not four cards with icons. The icons were dropped on purpose: see docs/brand.md. */}
+    <dl class="shell points">
       {
         c.fourC.map((word, index) => (
-          <>
-            {index > 0 && <span class="dot" aria-hidden="true">·</span>}
-            <span>{word}</span>
-          </>
+          <div class="point" data-reveal style={`transition-delay:${index * 80}ms`}>
+            <dt class="title-sm">{word}</dt>
+            <dd class="body">{c.info.fourCPoints[index]!}</dd>
+          </div>
         ))
       }
+    </dl>
+
+    <p class="shell statement fourc-closing" data-reveal>
+      <span class="star" aria-hidden="true"></span>{c.info.fourCClosing}
     </p>
-    <p class="muted">{c.info.fourCIntro}</p>
   </section>
 </BaseLayout>
 
 <style>
+  /* Same band language as El Baixo: a hairline head, the deck and the body in two
+     weights, and a closing line set as display type. */
+
+  section + section {
+    margin-top: clamp(5rem, 12vw, 10rem);
+  }
+
+  /* ---------- Type ---------- */
+
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    letter-spacing: 0.2em;
+  }
+
+  .deck {
+    max-width: 24ch;
+    font-size: clamp(1.15rem, 2vw, 1.7rem);
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .body {
+    max-width: 38ch;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.9;
+  }
+
+  .body p + p {
+    margin-top: 1.2em;
+  }
+
+  /* The star hangs in the margin, so the first line starts on the same edge as the rest. */
+  .statement {
+    max-width: 22ch;
+    padding-top: clamp(1rem, 2vw, 1.75rem);
+    padding-left: 1.3em;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 2.6rem);
+    letter-spacing: 0.03em;
+    line-height: 1.12;
+    text-transform: uppercase;
+    text-indent: -1.3em;
+  }
+
+  .statement .star {
+    margin-right: 0.5em;
+    vertical-align: 0.15em;
+  }
+
+  /* ---------- Quién soy ---------- */
+
   .about {
     display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
-    gap: clamp(2rem, 7vw, 7rem);
-    align-items: end;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem) clamp(2rem, 6vw, 6rem);
+    align-items: start;
     padding-top: clamp(2rem, 6vw, 5rem);
   }
 
-  .about-photo {
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
+  .about-head {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: clamp(0.75rem, 1.6vw, 1.25rem);
   }
 
-  .about-photo :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .about-title {
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    line-height: 0.98;
   }
 
   .about-text {
     display: grid;
-    gap: 1.5rem;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    margin-top: clamp(1rem, 3vw, 2.5rem);
   }
 
-  .process {
-    margin-top: clamp(6rem, 14vw, 12rem);
-  }
-
-  .process-head {
-    display: grid;
-    gap: 1.25rem;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
-    width: min(100%, 1440px);
-    margin: clamp(2.5rem, 5vw, 4rem) auto 0;
-    padding-inline: var(--gutter);
-  }
-
-  .step {
-    display: grid;
-    gap: 0.6rem;
-    align-content: start;
-  }
-
-  .step-photo {
+  /* The frame fills its column, the same size it had before the parallax. It never
+     moves: only the photo inside it drifts, so the composition stays put. */
+  .photo {
+    position: relative;
+    grid-row: span 2;
     aspect-ratio: 3 / 4;
+    margin-top: clamp(1rem, 3vw, 2.5rem);
     overflow: hidden;
-    margin-bottom: 0.6rem;
   }
 
-  .step-photo :global(img) {
+  /* 13% taller than the frame at each end, so the photo can drift without opening a
+     gap. inset resolves the top and bottom against the height of the frame, which a
+     percentage margin would not do: it would read the width instead. */
+  .photo-move {
+    position: absolute;
+    inset: -13% 0;
+  }
+
+  .photo-in {
+    height: 100%;
+  }
+
+  .photo :global(img) {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .four-c {
+  .about .statement {
+    align-self: end;
+    margin-top: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  /* ---------- The 4 C ---------- */
+
+  .fourc-head {
     display: grid;
     gap: 1.25rem;
-    margin-top: clamp(6rem, 14vw, 12rem);
     text-align: center;
     justify-items: center;
   }
@@ -147,6 +222,7 @@ const c = copy[locale];
     gap: 0.2em 0.5em;
     font-family: var(--font-display);
     font-size: clamp(1.8rem, 5.5vw, 5rem);
+    font-weight: 400;
     letter-spacing: 0.04em;
     line-height: 1.1;
     text-transform: uppercase;
@@ -156,24 +232,58 @@ const c = copy[locale];
     color: var(--ambar);
   }
 
+  .fourc-intro {
+    max-width: 46ch;
+  }
+
+  /* dl and dd keep their browser margins, so they are cleared here. */
+  .points {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin: clamp(2.5rem, 6vw, 5rem) auto 0;
+  }
+
+  .points dd {
+    margin: 0;
+  }
+
+  .point {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .point .body {
+    max-width: 28ch;
+  }
+
+  /* The closing line stays centred and short, so it reads as a sign-off and not as a
+     headline running the full width of the page. */
+  .fourc-closing {
+    max-width: 26ch;
+    margin-top: clamp(3rem, 7vw, 6rem);
+    padding-left: 0;
+    border-top: 0;
+    text-align: center;
+    text-indent: 0;
+  }
+
+  @media (max-width: 1020px) {
+    .points {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   @media (max-width: 760px) {
     .about {
       grid-template-columns: 1fr;
     }
 
-    /* Process steps become a sideways swipe row */
-    .steps {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 70%;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--gutter);
-      padding-bottom: 1rem;
-    }
-
-    .step {
-      scroll-snap-align: start;
+    .points {
+      grid-template-columns: 1fr;
     }
 
     .slogan {

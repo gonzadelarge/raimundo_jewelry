@@ -1,9 +1,7 @@
 ---
-import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { copy, otherLocale, routePath, ui, type Locale } from "@/i18n";
 import { pieces } from "@/data/pieces";
-import { contactPhoto } from "@/data/photos";
 import { site } from "@/data/site";
 
 interface Props {
@@ -14,7 +12,13 @@ const { locale } = Astro.props;
 const c = copy[locale];
 const t = ui[locale];
 const pieceTitles = Object.fromEntries(pieces.map((piece) => [piece.slug, piece.title[locale]]));
+
+// There is no form. Every action on this page opens the visitor's mail app with the
+// subject already written, so an answer lands in the same inbox as the footer link.
 const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURIComponent(`Raimundo · ${subject}`)}`;
+
+// wa.me opens the chat in the app or in WhatsApp Web, with the first line already typed.
+const whatsapp = `${site.whatsapp}?text=${encodeURIComponent(t.whatsappHello)}`;
 ---
 
 <BaseLayout
@@ -26,57 +30,96 @@ const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURICom
   backdrop="marfil"
 >
   <div class="contact" data-contact data-pieces={JSON.stringify(pieceTitles)} data-email={site.email}>
-    <section class="shell intro">
-      <h1 class="title">{c.contact.title}</h1>
-      <p class="lead">{c.contact.intro}</p>
-      <p class="label piece-note" data-piece-note hidden>
-        <span class="star" aria-hidden="true"></span>
-        {c.contact.aboutPiece} <span data-piece-name></span>
+    <section class="shell intro" aria-labelledby="contact-title">
+      <div class="intro-head" data-reveal>
+        <p class="label mark"><span class="star" aria-hidden="true"></span> {c.origin}</p>
+        <h1 id="contact-title" class="title intro-title">{c.contact.title}</h1>
+      </div>
+
+      <div class="intro-text" data-reveal style="transition-delay:90ms">
+        <p class="deck">{c.contact.intro[0]}</p>
+        <div class="body">
+          {c.contact.intro.slice(1).map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+        <p class="label piece-note" data-piece-note hidden>
+          <span class="star" aria-hidden="true"></span>
+          {c.contact.aboutPiece} <span data-piece-name></span>
+        </p>
+      </div>
+
+      <p class="statement intro-closing" data-reveal style="transition-delay:160ms">
+        <span class="star" aria-hidden="true"></span>{c.contact.introClosing}
       </p>
     </section>
 
-    <section class="shell reasons" aria-label={c.contact.write}>
+    <section class="shell reasons" aria-labelledby="reasons-title">
+      <div class="head" data-reveal>
+        <h2 id="reasons-title" class="title head-title">{c.contact.reasonsTitle}</h2>
+      </div>
+
       <ul class="reason-list">
         {
-          c.contact.reasons.map((reason) => (
-            <li>
-              <a
-                class="reason"
-                href={mailto(reason.subject)}
-                data-reason={reason.key}
-                data-subject={reason.subject}
-              >
+          c.contact.reasons.map((reason, index) => (
+            <li data-reveal style={`transition-delay:${index * 80}ms`}>
+              <a class="reason" href={mailto(reason.subject)} data-reason={reason.key} data-subject={reason.subject}>
                 <span class="title-sm">{reason.title}</span>
-                <span class="reason-text muted">{reason.text}</span>
+                <span class="body">{reason.text}</span>
                 <span class="label arrow-link">
-                  {c.contact.write} <span class="arrow" aria-hidden="true">→</span>
+                  {c.contact.write}{" "}
+                  <span class="arrow" aria-hidden="true">
+                    →
+                  </span>
                 </span>
               </a>
             </li>
           ))
         }
       </ul>
-      <p class="label muted draft-note">{c.contact.formNote}</p>
     </section>
 
-    <section class="shell commission" id="encargos" aria-labelledby="commission-title">
-      <div class="commission-photo" data-reveal>
-        <Image src={contactPhoto} alt="" widths={[400, 700]} sizes="(max-width: 760px) 100vw, 36vw" />
+    <section class="shell band" id="encargos" aria-labelledby="commission-title">
+      <div class="head" data-reveal>
+        <h2 id="commission-title" class="title head-title">{c.contact.commissionTitle}</h2>
       </div>
-      <div class="commission-text" data-reveal>
-        <p class="label muted">{c.contact.reasons[1].title}</p>
-        <h2 id="commission-title" class="title-sm">{c.contact.commissionTitle}</h2>
-        <p>{c.contact.commission}</p>
-        <ol class="commission-steps">
-          {c.contact.steps.map((step, index) => <li><span class="label muted">0{index + 1}</span> {step}</li>)}
-        </ol>
+
+      <p class="deck band-lead" data-reveal style="transition-delay:90ms">{c.contact.commissionLead}</p>
+
+      <div class="body band-body" data-reveal style="transition-delay:160ms">
+        {c.contact.commissionBody.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    <section class="shell process" aria-labelledby="process-title">
+      <div class="head" data-reveal>
+        <h2 id="process-title" class="title head-title">{c.contact.processTitle}</h2>
+      </div>
+
+      <ol class="steps">
+        {
+          c.contact.steps.map((step, index) => (
+            <li class="step" data-reveal style={`transition-delay:${index * 70}ms`}>
+              <p class="label n step-n">0{index + 1}</p>
+              <h3 class="title-sm">{step.title}</h3>
+              <p class="body">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="close" data-reveal>
+        <p class="statement">
+          <span class="star" aria-hidden="true"></span>{c.contact.closing}
+        </p>
+        <a class="button" href={mailto(c.contact.reasons[1].subject)} data-reason="commission" data-subject={c.contact.reasons[1].subject}>
+          {c.contact.write}
+        </a>
       </div>
     </section>
 
     <section class="shell channels" aria-label={c.contact.channels}>
       <a class="label" href={`mailto:${site.email}`}>{site.email}</a>
       <a class="label" href={site.instagram} target="_blank" rel="noreferrer">Instagram {site.instagramHandle}</a>
-      <a class="label" href={site.whatsapp} target="_blank" rel="noreferrer">WhatsApp <span class="muted">({t.draft})</span></a>
+      <a class="label" href={whatsapp} target="_blank" rel="noreferrer">WhatsApp</a>
     </section>
   </div>
 </BaseLayout>
@@ -111,30 +154,131 @@ const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURICom
 </script>
 
 <style>
+  /* The contact page has no photos, so the layout is carried by type: the same hairline
+     heads, deck and body as El Baixo and Info. */
+
+  /* This page is short, so it keeps less air between sections than El Baixo or Info. */
+  section + section {
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  /* ---------- Type ---------- */
+
+  .mark {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    letter-spacing: 0.2em;
+  }
+
+  .deck {
+    max-width: 24ch;
+    font-size: clamp(1.15rem, 2vw, 1.7rem);
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .body {
+    max-width: 38ch;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.9;
+  }
+
+  .body p + p {
+    margin-top: 1.2em;
+  }
+
+  /* The star hangs in the margin, so the first line starts on the same edge as the rest. */
+  .statement {
+    max-width: 22ch;
+    padding-top: clamp(1rem, 2vw, 1.75rem);
+    padding-left: 1.3em;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 2.6rem);
+    letter-spacing: 0.03em;
+    line-height: 1.12;
+    text-transform: uppercase;
+    text-indent: -1.3em;
+  }
+
+  .statement .star {
+    margin-right: 0.5em;
+    vertical-align: 0.15em;
+  }
+
+  .n {
+    color: var(--ambar);
+    letter-spacing: 0.2em;
+  }
+
+  /* One hairline across the section, the title under it. The sections carry no number
+     here, because the process already numbers its five steps and two counts on one page
+     read as one broken list. */
+  .head {
+    grid-column: 1 / -1;
+    padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .head-title {
+    max-width: 14em;
+  }
+
+  /* ---------- Intro ---------- */
+
   .intro {
     display: grid;
-    gap: 1.5rem;
-    padding-top: clamp(2rem, 7vw, 6rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem) clamp(2rem, 6vw, 6rem);
+    align-items: start;
+    padding-top: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  .intro-head {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  }
+
+  .intro-title {
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    line-height: 0.98;
+  }
+
+  .intro-text {
+    display: grid;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    margin-top: clamp(0.75rem, 2vw, 1.5rem);
+  }
+
+  .intro-closing {
+    align-self: end;
+    margin-top: clamp(0.75rem, 2vw, 1.5rem);
   }
 
   .piece-note {
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    color: var(--fg);
   }
 
   .piece-note[hidden] {
     display: none;
   }
 
+  /* ---------- Reasons ---------- */
+
   .reasons {
-    margin-top: clamp(3rem, 7vw, 5rem);
+    display: grid;
   }
 
   .reason-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid var(--line);
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
   }
 
   .reason-list li + li {
@@ -143,10 +287,10 @@ const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURICom
 
   .reason {
     display: grid;
-    gap: 1rem;
+    gap: 0.8rem;
     align-content: start;
     height: 100%;
-    padding: 2rem clamp(1rem, 2.5vw, 2rem) 2rem 0;
+    padding: clamp(1.25rem, 2vw, 1.75rem) clamp(1rem, 2.5vw, 2rem) clamp(1.25rem, 2vw, 1.75rem) 0;
     transition: background-color 250ms ease;
   }
 
@@ -159,70 +303,123 @@ const mailto = (subject: string) => `mailto:${site.email}?subject=${encodeURICom
     background: color-mix(in srgb, var(--ambar) 14%, transparent);
   }
 
+  .reason .body {
+    max-width: 30ch;
+  }
+
   .reason .arrow-link {
     justify-self: start;
     margin-top: 0.5rem;
   }
 
-  .draft-note {
-    margin-top: 1rem;
-  }
+  /* ---------- Commissions ---------- */
 
-  .commission {
+  .band {
     display: grid;
-    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: center;
-    margin-top: clamp(6rem, 12vw, 10rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem) clamp(2rem, 6vw, 6rem);
+    align-items: start;
   }
 
-  .commission-photo {
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
+  .band-lead,
+  .band-body {
+    margin-top: clamp(0.75rem, 2vw, 1.5rem);
   }
 
-  .commission-photo :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .band-body {
+    padding-left: clamp(1rem, 2vw, 2rem);
+    border-left: 1px solid var(--line);
   }
 
-  .commission-text {
+  /* ---------- The process ---------- */
+
+  .steps {
     display: grid;
-    gap: 1.25rem;
-    max-width: 36rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
   }
 
-  .commission-steps {
+  .step {
     display: grid;
-    gap: 0.6rem;
-    padding-top: 1rem;
+    gap: 0.7rem;
+    align-content: start;
+    min-width: 0;
+    padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
     border-top: 1px solid var(--line);
   }
+
+  /* One fifth of the page is narrow, and the display face has no lowercase, so the
+     shared .title-sm size runs "CONVERSACIÓN" into the next column. These titles take
+     their own smaller size and break inside a word when they still do not fit. */
+  .step h3 {
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+    letter-spacing: 0.04em;
+    overflow-wrap: break-word;
+  }
+
+  .step-n {
+    color: var(--ambar);
+  }
+
+  .step .body {
+    max-width: 24ch;
+  }
+
+  /* The closing line and the button share a row, so the page does not end on two
+     half-empty bands. */
+  .close {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .close .statement {
+    max-width: 26ch;
+  }
+
+  /* ---------- Channels ---------- */
 
   .channels {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem 2.5rem;
-    margin-top: clamp(5rem, 10vw, 8rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  @media (max-width: 1020px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media (max-width: 760px) {
+    .intro,
+    .band {
+      grid-template-columns: 1fr;
+    }
+
+    .band-body {
+      padding-left: 0;
+      border-left: 0;
+    }
+
     .reason-list {
       grid-template-columns: 1fr;
     }
 
     .reason-list li + li {
       border-left: 0;
-      border-top: 1px solid var(--line);
     }
 
     .reason-list li + li .reason,
     .reason {
-      padding-inline: 0.75rem;
+      padding-inline: 0;
     }
 
-    .commission {
+    .steps {
       grid-template-columns: 1fr;
     }
   }

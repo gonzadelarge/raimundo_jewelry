@@ -64,10 +64,18 @@ of changing it.
 
 Still undecided. Ask before choosing one.
 
-- **Contact form.** Direct email links now, or an external service (Formspree, Web3Forms). Image
+- **Contact form.** Postponed on 2026-09-23: the contact page ships with `mailto:` links only.
+  A form cannot send mail from the browser, because that needs SMTP credentials, and anything in
+  the page is public. The two real options are an external service (Formspree, Web3Forms) or a
+  Cloudflare Pages Function in `functions/` that calls an email API with the key kept as a
+  Cloudflare secret. The second needs the domain first, for the SPF and DKIM records. Either way
+  the form needs server-side validation, a honeypot field and a link to the privacy page. Image
   upload usually needs a paid plan.
-- **WhatsApp.** Currently marked as a draft channel. The team has to confirm it as a sales
-  channel.
+- **WhatsApp.** Live on the contact page since 2026-09-23, as a plain `wa.me` link with the
+  first line of the chat already typed (`t.whatsappHello` in `src/i18n/ui.ts`, one per language).
+  No API, no cost. The number in `src/data/site.ts` must keep the country code with no `+`, no
+  spaces and no dashes, or `wa.me` fails. Still to confirm by the team: that `673444779` runs a
+  WhatsApp account, ideally WhatsApp Business, and who answers it.
 - **Analytics.** None, or a privacy-friendly tool that needs no cookie banner.
 - **Domain.** Not chosen. Hosting is Cloudflare.
 - **Carla Sans web licence.** Not confirmed. A blocker for launch.
